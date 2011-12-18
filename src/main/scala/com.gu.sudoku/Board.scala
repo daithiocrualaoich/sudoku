@@ -75,11 +75,17 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
     new Zone(seventh(Seven), seventh(Eight), seventh(Nine), eighth(Seven), eighth(Eight), eighth(Nine), ninth(Seven), ninth(Eight), ninth(Nine))
   )
 
-  def apply(i: Z_9): Column = column(i)
+  def apply(i: Z_9, j: Z_9): Option[Z_9] = column(i)(j)
 
   def row(i: Z_9): Row = rows(i.toInt - 1)
   def column(i: Z_9): Column = columns(i.toInt - 1)
   def zone(i: Z_9): Zone = zones(i.toInt - 1)
+  def zone(i: Z_9, j: Z_9): Zone = {
+    val band = (j.toInt - 1) / 3
+    val indexWithinBand = (i.toInt - 1) / 3
+
+    zone(Z_9.fromInt(band * 3 + indexWithinBand + 1))
+  }
 
   lazy val valid: Boolean = (rows ++ columns ++ zones) forall { _.valid }
   lazy val solved: Boolean = (rows ++ columns ++ zones) forall { _.solved }

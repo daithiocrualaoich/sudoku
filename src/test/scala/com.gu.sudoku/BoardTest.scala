@@ -377,21 +377,21 @@ class BoardTest extends FlatSpec with ShouldMatchers {
   }
 
   "Board" should "have apply notation" in {
-    emptyBoard(One)(Seven) should be(None)
-    emptyBoard(Three)(Three) should be(None)
-    emptyBoard(Eight)(Two) should be(None)
+    emptyBoard(One, Seven) should be(None)
+    emptyBoard(Three, Three) should be(None)
+    emptyBoard(Eight, Two) should be(None)
 
-    partialBoard(One)(Seven) should be(Some(Three))
-    partialBoard(Three)(Three) should be(Some(Seven))
-    partialBoard(Eight)(Two) should be(Some(Six))
+    partialBoard(One, Seven) should be(Some(Three))
+    partialBoard(Three, Three) should be(Some(Seven))
+    partialBoard(Eight, Two) should be(Some(Six))
 
-    fullBoard(One)(Seven) should be(Some(Three))
-    fullBoard(Three)(Three) should be(Some(Nine))
-    fullBoard(Eight)(Two) should be(Some(Two))
+    fullBoard(One, Seven) should be(Some(Three))
+    fullBoard(Three, Three) should be(Some(Nine))
+    fullBoard(Eight, Two) should be(Some(Two))
 
-    invalidBoard(One)(Seven) should be(Some(Three))
-    invalidBoard(Three)(Three) should be(Some(Seven))
-    invalidBoard(Eight)(Two) should be(Some(Six))
+    invalidBoard(One, Seven) should be(Some(Three))
+    invalidBoard(Three, Three) should be(Some(Seven))
+    invalidBoard(Eight, Two) should be(Some(Six))
   }
 
   it should "return rows in empty board" in {
@@ -584,6 +584,98 @@ class BoardTest extends FlatSpec with ShouldMatchers {
       Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
       Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight))
     ))
+  }
+
+  it should "return zones for row, column indexing" in {
+    fullBoard.zone(One, One) should be(fullBoard.zone(One))
+    fullBoard.zone(One, Two) should be(fullBoard.zone(One))
+    fullBoard.zone(One, Three) should be(fullBoard.zone(One))
+    fullBoard.zone(Two, One) should be(fullBoard.zone(One))
+    fullBoard.zone(Two, Two) should be(fullBoard.zone(One))
+    fullBoard.zone(Two, Three) should be(fullBoard.zone(One))
+    fullBoard.zone(Three, One) should be(fullBoard.zone(One))
+    fullBoard.zone(Three, Two) should be(fullBoard.zone(One))
+    fullBoard.zone(Three, Three) should be(fullBoard.zone(One))
+
+    fullBoard.zone(Four, One) should be(fullBoard.zone(Two))
+    fullBoard.zone(Four, Two) should be(fullBoard.zone(Two))
+    fullBoard.zone(Four, Three) should be(fullBoard.zone(Two))
+    fullBoard.zone(Five, One) should be(fullBoard.zone(Two))
+    fullBoard.zone(Five, Two) should be(fullBoard.zone(Two))
+    fullBoard.zone(Five, Three) should be(fullBoard.zone(Two))
+    fullBoard.zone(Six, One) should be(fullBoard.zone(Two))
+    fullBoard.zone(Six, Two) should be(fullBoard.zone(Two))
+    fullBoard.zone(Six, Three) should be(fullBoard.zone(Two))
+
+    fullBoard.zone(Seven, One) should be(fullBoard.zone(Three))
+    fullBoard.zone(Seven, Two) should be(fullBoard.zone(Three))
+    fullBoard.zone(Seven, Three) should be(fullBoard.zone(Three))
+    fullBoard.zone(Eight, One) should be(fullBoard.zone(Three))
+    fullBoard.zone(Eight, Two) should be(fullBoard.zone(Three))
+    fullBoard.zone(Eight, Three) should be(fullBoard.zone(Three))
+    fullBoard.zone(Nine, One) should be(fullBoard.zone(Three))
+    fullBoard.zone(Nine, Two) should be(fullBoard.zone(Three))
+    fullBoard.zone(Nine, Three) should be(fullBoard.zone(Three))
+
+    fullBoard.zone(One, Four) should be(fullBoard.zone(Four))
+    fullBoard.zone(One, Five) should be(fullBoard.zone(Four))
+    fullBoard.zone(One, Six) should be(fullBoard.zone(Four))
+    fullBoard.zone(Two, Four) should be(fullBoard.zone(Four))
+    fullBoard.zone(Two, Five) should be(fullBoard.zone(Four))
+    fullBoard.zone(Two, Six) should be(fullBoard.zone(Four))
+    fullBoard.zone(Three, Four) should be(fullBoard.zone(Four))
+    fullBoard.zone(Three, Five) should be(fullBoard.zone(Four))
+    fullBoard.zone(Three, Six) should be(fullBoard.zone(Four))
+
+    fullBoard.zone(Four, Four) should be(fullBoard.zone(Five))
+    fullBoard.zone(Four, Five) should be(fullBoard.zone(Five))
+    fullBoard.zone(Four, Six) should be(fullBoard.zone(Five))
+    fullBoard.zone(Five, Four) should be(fullBoard.zone(Five))
+    fullBoard.zone(Five, Five) should be(fullBoard.zone(Five))
+    fullBoard.zone(Five, Six) should be(fullBoard.zone(Five))
+    fullBoard.zone(Six, Four) should be(fullBoard.zone(Five))
+    fullBoard.zone(Six, Five) should be(fullBoard.zone(Five))
+    fullBoard.zone(Six, Six) should be(fullBoard.zone(Five))
+
+    fullBoard.zone(Seven, Four) should be(fullBoard.zone(Six))
+    fullBoard.zone(Seven, Five) should be(fullBoard.zone(Six))
+    fullBoard.zone(Seven, Six) should be(fullBoard.zone(Six))
+    fullBoard.zone(Eight, Four) should be(fullBoard.zone(Six))
+    fullBoard.zone(Eight, Five) should be(fullBoard.zone(Six))
+    fullBoard.zone(Eight, Six) should be(fullBoard.zone(Six))
+    fullBoard.zone(Nine, Four) should be(fullBoard.zone(Six))
+    fullBoard.zone(Nine, Five) should be(fullBoard.zone(Six))
+    fullBoard.zone(Nine, Six) should be(fullBoard.zone(Six))
+
+    fullBoard.zone(One, Seven) should be(fullBoard.zone(Seven))
+    fullBoard.zone(One, Eight) should be(fullBoard.zone(Seven))
+    fullBoard.zone(One, Nine) should be(fullBoard.zone(Seven))
+    fullBoard.zone(Two, Seven) should be(fullBoard.zone(Seven))
+    fullBoard.zone(Two, Eight) should be(fullBoard.zone(Seven))
+    fullBoard.zone(Two, Nine) should be(fullBoard.zone(Seven))
+    fullBoard.zone(Three, Seven) should be(fullBoard.zone(Seven))
+    fullBoard.zone(Three, Eight) should be(fullBoard.zone(Seven))
+    fullBoard.zone(Three, Nine) should be(fullBoard.zone(Seven))
+
+    fullBoard.zone(Four, Seven) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Four, Eight) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Four, Nine) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Five, Seven) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Five, Eight) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Five, Nine) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Six, Seven) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Six, Eight) should be(fullBoard.zone(Eight))
+    fullBoard.zone(Six, Nine) should be(fullBoard.zone(Eight))
+
+    fullBoard.zone(Seven, Eight) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Eight, Eight) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Seven, Nine) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Eight, Eight) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Eight, Eight) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Eight, Nine) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Nine, Eight) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Nine, Eight) should be(fullBoard.zone(Nine))
+    fullBoard.zone(Nine, Nine) should be(fullBoard.zone(Nine))
   }
 
   it should "return valid for empty board" in {
