@@ -1,7 +1,7 @@
 package com.gu.sudoku
 
 sealed abstract class Z_9(val representative: Int) {
-  lazy val toInt: Int = representative
+  def >(that: Z_9): Boolean = representative > that.representative
   override def toString(): String = "[" + representative.toString + "]"
 }
 

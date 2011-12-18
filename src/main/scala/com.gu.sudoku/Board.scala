@@ -2,7 +2,7 @@ package com.gu.sudoku
 
 sealed abstract class Z_9IndexedBlock {
   protected val _values: List[Option[Z_9]]
-  def apply(i: Z_9): Option[Z_9] = _values.rotate(8)(i.toInt % 9)
+  def apply(i: Z_9): Option[Z_9] = _values.rotate(8)(i.representative % 9)
 
   private lazy val _valuesList: List[Z_9] = _values flatMap { _.toList }
   lazy val values: Set[Z_9] = _valuesList.toSet
@@ -77,12 +77,12 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
 
   def apply(i: Z_9, j: Z_9): Option[Z_9] = column(i)(j)
 
-  def row(i: Z_9): Row = rows(i.toInt - 1)
-  def column(i: Z_9): Column = columns(i.toInt - 1)
-  def zone(i: Z_9): Zone = zones(i.toInt - 1)
+  def row(i: Z_9): Row = rows(i.representative - 1)
+  def column(i: Z_9): Column = columns(i.representative - 1)
+  def zone(i: Z_9): Zone = zones(i.representative - 1)
   def zone(i: Z_9, j: Z_9): Zone = {
-    val band = (j.toInt - 1) / 3
-    val indexWithinBand = (i.toInt - 1) / 3
+    val band = (j.representative - 1) / 3
+    val indexWithinBand = (i.representative - 1) / 3
 
     zone(Z_9.fromInt(band * 3 + indexWithinBand + 1))
   }
@@ -93,17 +93,17 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
   override def toString = {
     val rowStrings = rows map { row =>
       List(
-        row.first map { _.toInt } getOrElse " ",
-        row.second map { _.toInt } getOrElse " ",
-        row.third map { _.toInt } getOrElse " ",
+        row.first map { _.representative } getOrElse " ",
+        row.second map { _.representative } getOrElse " ",
+        row.third map { _.representative } getOrElse " ",
         "|",
-        row.fourth map { _.toInt } getOrElse " ",
-        row.fifth map { _.toInt } getOrElse " ",
-        row.sixth map { _.toInt } getOrElse " ",
+        row.fourth map { _.representative } getOrElse " ",
+        row.fifth map { _.representative } getOrElse " ",
+        row.sixth map { _.representative } getOrElse " ",
         "|",
-        row.seventh map { _.toInt } getOrElse " ",
-        row.eighth map { _.toInt } getOrElse " ",
-        row.ninth map { _.toInt } getOrElse " "
+        row.seventh map { _.representative } getOrElse " ",
+        row.eighth map { _.representative } getOrElse " ",
+        row.ninth map { _.representative } getOrElse " "
       ).mkString(" ", " ", " ")
     }
 
@@ -121,6 +121,6 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
       rowStrings(8)
     )
 
-    allRows mkString "\n"
+    allRows.mkString("\n", "\n", "\n")
   }
 }

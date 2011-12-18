@@ -778,21 +778,23 @@ class BoardTest extends FlatSpec with ShouldMatchers {
 
   it should "toString boards as grids" in {
     emptyBoard.toString should be(
-      "       |       |       \n" +
-        "       |       |       \n" +
-        "       |       |       \n" +
-        "-----------------------\n" +
+      "\n" +
         "       |       |       \n" +
         "       |       |       \n" +
         "       |       |       \n" +
         "-----------------------\n" +
         "       |       |       \n" +
         "       |       |       \n" +
-        "       |       |       "
+        "       |       |       \n" +
+        "-----------------------\n" +
+        "       |       |       \n" +
+        "       |       |       \n" +
+        "       |       |       \n"
     )
 
     partialBoard.toString should be(
-      " 1     | 2     | 3     \n" +
+      "\n" +
+        " 1     | 2     | 3     \n" +
         "   4   |   5   |   6   \n" +
         "     7 |     8 |     9 \n" +
         "-----------------------\n" +
@@ -802,11 +804,12 @@ class BoardTest extends FlatSpec with ShouldMatchers {
         "-----------------------\n" +
         " 3     | 1     | 2     \n" +
         "   6   |   4   |   5   \n" +
-        "     9 |     7 |     8 "
+        "     9 |     7 |     8 \n"
     )
 
     fullBoard.toString should be(
-      " 1 2 3 | 4 5 6 | 7 8 9 \n" +
+      "\n" +
+        " 1 2 3 | 4 5 6 | 7 8 9 \n" +
         " 4 5 6 | 7 8 9 | 1 2 3 \n" +
         " 7 8 9 | 1 2 3 | 4 5 6 \n" +
         "-----------------------\n" +
@@ -816,11 +819,12 @@ class BoardTest extends FlatSpec with ShouldMatchers {
         "-----------------------\n" +
         " 3 4 5 | 6 7 8 | 9 1 2 \n" +
         " 6 7 8 | 9 1 2 | 3 4 5 \n" +
-        " 9 1 2 | 3 4 5 | 6 7 8 "
+        " 9 1 2 | 3 4 5 | 6 7 8 \n"
     )
 
     invalidBoard.toString should be(
-      " 1 1   | 2     | 3     \n" +
+      "\n" +
+        " 1 1   | 2     | 3     \n" +
         "   4   |   5   |   6   \n" +
         "     7 |     8 |     9 \n" +
         "-----------------------\n" +
@@ -830,7 +834,7 @@ class BoardTest extends FlatSpec with ShouldMatchers {
         "-----------------------\n" +
         " 3     | 1     | 2     \n" +
         "   6   |   4   |   5   \n" +
-        "     9 |     7 |     8 "
+        "     9 |     7 |     8 \n"
     )
   }
 }

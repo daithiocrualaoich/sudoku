@@ -32,7 +32,7 @@ class Z_9Test extends FlatSpec with ShouldMatchers {
 
   it should "convert to Int" in {
     for (i <- 1 to 9) {
-      Z_9(i).toInt should be(i)
+      Z_9(i).representative should be(i)
     }
   }
 }
