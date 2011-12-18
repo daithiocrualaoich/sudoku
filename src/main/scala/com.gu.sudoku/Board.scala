@@ -58,5 +58,30 @@ case class Zone(
   protected val _values: List[Option[Z_9]] = List(upperLeft, upperCentre, upperRight, centreLeft, centre, centreRight, lowerLeft, lowerCentre, lowerRight)
 }
 
+case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, sixth: Row, seventh: Row, eighth: Row, ninth: Row) {
 
+  private val rows = List(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth)
+  private val columns = Z_9.all map { i => new Column(first(i), second(i), third(i), fourth(i), fifth(i), sixth(i), seventh(i), eighth(i), ninth(i)) }
+  private val zones = List(
+    // Band 1
+    new Zone(first(One), first(Two), first(Three), second(One), second(Two), second(Three), third(One), third(Two), third(Three)),
+    new Zone(first(Four), first(Five), first(Six), second(Four), second(Five), second(Six), third(Four), third(Five), third(Six)),
+    new Zone(first(Seven), first(Eight), first(Nine), second(Seven), second(Eight), second(Nine), third(Seven), third(Eight), third(Nine)),
+
+    // Band 2
+    new Zone(fourth(One), fourth(Two), fourth(Three), fifth(One), fifth(Two), fifth(Three), sixth(One), sixth(Two), sixth(Three)),
+    new Zone(fourth(Four), fourth(Five), fourth(Six), fifth(Four), fifth(Five), fifth(Six), sixth(Four), sixth(Five), sixth(Six)),
+    new Zone(fourth(Seven), fourth(Eight), fourth(Nine), fifth(Seven), fifth(Eight), fifth(Nine), sixth(Seven), sixth(Eight), sixth(Nine)),
+
+    // Band 3
+    new Zone(seventh(One), seventh(Two), seventh(Three), eighth(One), eighth(Two), eighth(Three), ninth(One), ninth(Two), ninth(Three)),
+    new Zone(seventh(Four), seventh(Five), seventh(Six), eighth(Four), eighth(Five), eighth(Six), ninth(Four), ninth(Five), ninth(Six)),
+    new Zone(seventh(Seven), seventh(Eight), seventh(Nine), eighth(Seven), eighth(Eight), eighth(Nine), ninth(Seven), ninth(Eight), ninth(Nine))
+  )
+
+  def row(i: Z_9) = rows(i.toInt - 1)
+  def column(i: Z_9) = columns(i.toInt - 1)
+  def zone(i: Z_9) = zones(i.toInt - 1)
+
+}
 
