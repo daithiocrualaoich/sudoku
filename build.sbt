@@ -29,8 +29,7 @@ libraryDependencies ++= Seq(
 
 // Development Settings
 
-seq(com.typesafe.sbtscalariform.ScalariformPlugin.settings: _*)
-
+seq(scalariformSettings: _*)
 
 
 
@@ -42,5 +41,3 @@ maxErrors := 20
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
 scalacOptions ++= Seq("-unchecked", "-optimise", "-deprecation")
-
-//parallelExecution in Test := false
