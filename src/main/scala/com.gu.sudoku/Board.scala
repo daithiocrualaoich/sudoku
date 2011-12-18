@@ -3,10 +3,6 @@ package com.gu.sudoku
 sealed abstract class Z_9IndexedBlock {
   protected val _values: List[Option[Z_9]]
   def apply(i: Z_9): Option[Z_9] = _values.rotate(8)(i.toInt % 9)
-  //  def apply(i: Z_9): Option[Z_9] = i match {
-  //    case Nine => _values.last
-  //    case _ => _values(i.toInt - 1)
-  //  }
 
   private lazy val _valuesList: List[Z_9] = _values flatMap { _.toList }
   lazy val values: Set[Z_9] = _valuesList.toSet
@@ -79,9 +75,12 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
     new Zone(seventh(Seven), seventh(Eight), seventh(Nine), eighth(Seven), eighth(Eight), eighth(Nine), ninth(Seven), ninth(Eight), ninth(Nine))
   )
 
-  def row(i: Z_9) = rows(i.toInt - 1)
-  def column(i: Z_9) = columns(i.toInt - 1)
-  def zone(i: Z_9) = zones(i.toInt - 1)
+  def apply(i: Z_9): Column = column(i)
 
+  def row(i: Z_9): Row = rows(i.toInt - 1)
+  def column(i: Z_9): Column = columns(i.toInt - 1)
+  def zone(i: Z_9): Zone = zones(i.toInt - 1)
+
+  lazy val valid: Boolean = (rows ++ columns ++ zones) forall { _.valid }
+  lazy val solved: Boolean = (rows ++ columns ++ zones) forall { _.solved }
 }
-

@@ -5,10 +5,10 @@ import org.scalatest.matchers.ShouldMatchers
 
 class RowTest extends FlatSpec with ShouldMatchers {
 
-  val emptyRow = new Row(None, None, None, None, None, None, None, None, None)
-  val partialRow = new Row(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine))
-  val fullRow = new Row(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine))
-  val invalidRow = new Row(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine))
+  val emptyRow = Row(None, None, None, None, None, None, None, None, None)
+  val partialRow = Row(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine))
+  val fullRow = Row(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine))
+  val invalidRow = Row(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine))
 
   "Row" should "return values set in empty row" in {
     emptyRow.values should be(Set())
@@ -83,20 +83,20 @@ class RowTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "have equality test based on immutability" in {
-    emptyRow should be(new Row(None, None, None, None, None, None, None, None, None))
-    partialRow should be(new Row(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine)))
-    fullRow should be(new Row(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine)))
-    invalidRow should be(new Row(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine)))
+    emptyRow should be(Row(None, None, None, None, None, None, None, None, None))
+    partialRow should be(Row(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine)))
+    fullRow should be(Row(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine)))
+    invalidRow should be(Row(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine)))
   }
 
 }
 
 class ColumnTest extends FlatSpec with ShouldMatchers {
 
-  val emptyColumn = new Column(None, None, None, None, None, None, None, None, None)
-  val partialColumn = new Column(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine))
-  val fullColumn = new Column(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine))
-  val invalidColumn = new Column(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine))
+  val emptyColumn = Column(None, None, None, None, None, None, None, None, None)
+  val partialColumn = Column(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine))
+  val fullColumn = Column(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine))
+  val invalidColumn = Column(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine))
 
   "Column" should "return values set in empty column" in {
     emptyColumn.values should be(Set())
@@ -171,19 +171,19 @@ class ColumnTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "have equality test based on immutability" in {
-    emptyColumn should be(new Column(None, None, None, None, None, None, None, None, None))
-    partialColumn should be(new Column(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine)))
-    fullColumn should be(new Column(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine)))
-    invalidColumn should be(new Column(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine)))
+    emptyColumn should be(Column(None, None, None, None, None, None, None, None, None))
+    partialColumn should be(Column(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine)))
+    fullColumn should be(Column(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine)))
+    invalidColumn should be(Column(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine)))
   }
 }
 
 class ZoneTest extends FlatSpec with ShouldMatchers {
 
-  val emptyZone = new Zone(None, None, None, None, None, None, None, None, None)
-  val partialZone = new Zone(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine))
-  val fullZone = new Zone(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine))
-  val invalidZone = new Zone(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine))
+  val emptyZone = Zone(None, None, None, None, None, None, None, None, None)
+  val partialZone = Zone(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine))
+  val fullZone = Zone(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine))
+  val invalidZone = Zone(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine))
 
   "Zone" should "return values set in empty zone" in {
     emptyZone.values should be(Set())
@@ -258,10 +258,10 @@ class ZoneTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "have equality test based on immutability" in {
-    emptyZone should be(new Zone(None, None, None, None, None, None, None, None, None))
-    partialZone should be(new Zone(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine)))
-    fullZone should be(new Zone(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine)))
-    invalidZone should be(new Zone(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine)))
+    emptyZone should be(Zone(None, None, None, None, None, None, None, None, None))
+    partialZone should be(Zone(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine)))
+    fullZone should be(Zone(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine)))
+    invalidZone should be(Zone(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine)))
   }
 }
 
@@ -281,15 +281,15 @@ class BoardTest extends FlatSpec with ShouldMatchers {
     // _ _ _ | _ _ _ | _ _ _
 
     Board(
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None)
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None)
     )
   }
 
@@ -307,17 +307,17 @@ class BoardTest extends FlatSpec with ShouldMatchers {
     // _ _ 9 | _ _ 7 | _ _ 8
 
     Board(
-      new Row(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
-      new Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
-      new Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+      Row(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
+      Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+      Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
 
-      new Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
-      new Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
-      new Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+      Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+      Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+      Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
 
-      new Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
-      new Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
-      new Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+      Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+      Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
     )
   }
 
@@ -334,17 +334,17 @@ class BoardTest extends FlatSpec with ShouldMatchers {
     // 6 7 8 | 9 1 2 | 3 4 5
     // 9 1 2 | 3 4 5 | 6 7 8
     Board(
-      new Row(Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine)),
-      new Row(Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three)),
-      new Row(Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six)),
+      Row(Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine)),
+      Row(Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three)),
+      Row(Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six)),
 
-      new Row(Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One)),
-      new Row(Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four)),
-      new Row(Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven)),
+      Row(Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One)),
+      Row(Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four)),
+      Row(Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven)),
 
-      new Row(Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two)),
-      new Row(Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five)),
-      new Row(Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight))
+      Row(Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two)),
+      Row(Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five)),
+      Row(Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight))
     )
   }
 
@@ -362,210 +362,325 @@ class BoardTest extends FlatSpec with ShouldMatchers {
     // _ _ 9 | _ _ 7 | _ _ 8
 
     Board(
-      new Row(Some(One), Some(One), None, Some(Two), None, None, Some(Three), None, None),
-      new Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
-      new Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+      Row(Some(One), Some(One), None, Some(Two), None, None, Some(Three), None, None),
+      Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+      Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
 
-      new Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
-      new Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
-      new Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+      Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+      Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+      Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
 
-      new Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
-      new Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
-      new Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+      Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+      Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
     )
   }
 
-  "Board" should "return rows in empty board" in {
+  "Board" should "have apply notation" in {
+    emptyBoard(One)(Seven) should be(None)
+    emptyBoard(Three)(Three) should be(None)
+    emptyBoard(Eight)(Two) should be(None)
+
+    partialBoard(One)(Seven) should be(Some(Three))
+    partialBoard(Three)(Three) should be(Some(Seven))
+    partialBoard(Eight)(Two) should be(Some(Six))
+
+    fullBoard(One)(Seven) should be(Some(Three))
+    fullBoard(Three)(Three) should be(Some(Nine))
+    fullBoard(Eight)(Two) should be(Some(Two))
+
+    invalidBoard(One)(Seven) should be(Some(Three))
+    invalidBoard(Three)(Three) should be(Some(Seven))
+    invalidBoard(Eight)(Two) should be(Some(Six))
+  }
+
+  it should "return rows in empty board" in {
     Z_9.all map { emptyBoard.row } should be(List(
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
 
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
 
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None),
-      new Row(None, None, None, None, None, None, None, None, None)
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None),
+      Row(None, None, None, None, None, None, None, None, None)
     ))
   }
 
   it should "return rows in partial board" in {
     Z_9.all map { partialBoard.row } should be(List(
-      new Row(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
-      new Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
-      new Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+      Row(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
+      Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+      Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
 
-      new Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
-      new Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
-      new Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+      Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+      Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+      Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
 
-      new Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
-      new Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
-      new Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+      Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+      Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
     ))
   }
 
   it should "return rows in full board" in {
     Z_9.all map { fullBoard.row } should be(List(
-      new Row(Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine)),
-      new Row(Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three)),
-      new Row(Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six)),
+      Row(Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine)),
+      Row(Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three)),
+      Row(Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six)),
 
-      new Row(Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One)),
-      new Row(Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four)),
-      new Row(Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven)),
+      Row(Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One)),
+      Row(Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four)),
+      Row(Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven)),
 
-      new Row(Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two)),
-      new Row(Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five)),
-      new Row(Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight))
+      Row(Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two)),
+      Row(Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five)),
+      Row(Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight))
     ))
   }
 
   it should "return rows in invalid board" in {
     Z_9.all map { invalidBoard.row } should be(List(
-      new Row(Some(One), Some(One), None, Some(Two), None, None, Some(Three), None, None),
-      new Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
-      new Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+      Row(Some(One), Some(One), None, Some(Two), None, None, Some(Three), None, None),
+      Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+      Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
 
-      new Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
-      new Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
-      new Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+      Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+      Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+      Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
 
-      new Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
-      new Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
-      new Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+      Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+      Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
     ))
   }
 
   it should "return columns in empty board" in {
     Z_9.all map { emptyBoard.column } should be(List(
-      new Column(None, None, None, None, None, None, None, None, None),
-      new Column(None, None, None, None, None, None, None, None, None),
-      new Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None),
 
-      new Column(None, None, None, None, None, None, None, None, None),
-      new Column(None, None, None, None, None, None, None, None, None),
-      new Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None),
 
-      new Column(None, None, None, None, None, None, None, None, None),
-      new Column(None, None, None, None, None, None, None, None, None),
-      new Column(None, None, None, None, None, None, None, None, None)
+      Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None),
+      Column(None, None, None, None, None, None, None, None, None)
     ))
   }
 
   it should "return columns in partial board" in {
     Z_9.all map { partialBoard.column } should be(List(
-      new Column(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
-      new Column(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
-      new Column(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+      Column(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
+      Column(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+      Column(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
 
-      new Column(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
-      new Column(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
-      new Column(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+      Column(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+      Column(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+      Column(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
 
-      new Column(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
-      new Column(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
-      new Column(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      Column(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+      Column(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+      Column(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
     ))
   }
 
   it should "return columns in full board" in {
     Z_9.all map { fullBoard.column } should be(List(
-      new Column(Some(One), Some(Four), Some(Seven), Some(Two), Some(Five), Some(Eight), Some(Three), Some(Six), Some(Nine)),
-      new Column(Some(Two), Some(Five), Some(Eight), Some(Three), Some(Six), Some(Nine), Some(Four), Some(Seven), Some(One)),
-      new Column(Some(Three), Some(Six), Some(Nine), Some(Four), Some(Seven), Some(One), Some(Five), Some(Eight), Some(Two)),
+      Column(Some(One), Some(Four), Some(Seven), Some(Two), Some(Five), Some(Eight), Some(Three), Some(Six), Some(Nine)),
+      Column(Some(Two), Some(Five), Some(Eight), Some(Three), Some(Six), Some(Nine), Some(Four), Some(Seven), Some(One)),
+      Column(Some(Three), Some(Six), Some(Nine), Some(Four), Some(Seven), Some(One), Some(Five), Some(Eight), Some(Two)),
 
-      new Column(Some(Four), Some(Seven), Some(One), Some(Five), Some(Eight), Some(Two), Some(Six), Some(Nine), Some(Three)),
-      new Column(Some(Five), Some(Eight), Some(Two), Some(Six), Some(Nine), Some(Three), Some(Seven), Some(One), Some(Four)),
-      new Column(Some(Six), Some(Nine), Some(Three), Some(Seven), Some(One), Some(Four), Some(Eight), Some(Two), Some(Five)),
+      Column(Some(Four), Some(Seven), Some(One), Some(Five), Some(Eight), Some(Two), Some(Six), Some(Nine), Some(Three)),
+      Column(Some(Five), Some(Eight), Some(Two), Some(Six), Some(Nine), Some(Three), Some(Seven), Some(One), Some(Four)),
+      Column(Some(Six), Some(Nine), Some(Three), Some(Seven), Some(One), Some(Four), Some(Eight), Some(Two), Some(Five)),
 
-      new Column(Some(Seven), Some(One), Some(Four), Some(Eight), Some(Two), Some(Five), Some(Nine), Some(Three), Some(Six)),
-      new Column(Some(Eight), Some(Two), Some(Five), Some(Nine), Some(Three), Some(Six), Some(One), Some(Four), Some(Seven)),
-      new Column(Some(Nine), Some(Three), Some(Six), Some(One), Some(Four), Some(Seven), Some(Two), Some(Five), Some(Eight))
+      Column(Some(Seven), Some(One), Some(Four), Some(Eight), Some(Two), Some(Five), Some(Nine), Some(Three), Some(Six)),
+      Column(Some(Eight), Some(Two), Some(Five), Some(Nine), Some(Three), Some(Six), Some(One), Some(Four), Some(Seven)),
+      Column(Some(Nine), Some(Three), Some(Six), Some(One), Some(Four), Some(Seven), Some(Two), Some(Five), Some(Eight))
     ))
   }
 
   it should "return columns in invalid board" in {
     Z_9.all map { invalidBoard.column } should be(List(
-      new Column(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
-      new Column(Some(One), Some(Four), None, None, Some(Five), None, None, Some(Six), None),
-      new Column(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+      Column(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
+      Column(Some(One), Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+      Column(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
 
-      new Column(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
-      new Column(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
-      new Column(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+      Column(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+      Column(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+      Column(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
 
-      new Column(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
-      new Column(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
-      new Column(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      Column(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+      Column(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+      Column(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
     ))
   }
 
   it should "return zones in empty board" in {
     Z_9.all map { emptyBoard.zone } should be(List(
-      new Zone(None, None, None, None, None, None, None, None, None),
-      new Zone(None, None, None, None, None, None, None, None, None),
-      new Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None),
 
-      new Zone(None, None, None, None, None, None, None, None, None),
-      new Zone(None, None, None, None, None, None, None, None, None),
-      new Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None),
 
-      new Zone(None, None, None, None, None, None, None, None, None),
-      new Zone(None, None, None, None, None, None, None, None, None),
-      new Zone(None, None, None, None, None, None, None, None, None)
+      Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None),
+      Zone(None, None, None, None, None, None, None, None, None)
     ))
   }
 
   it should "return zones in partial board" in {
     Z_9.all map { partialBoard.zone } should be(List(
-      new Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
-      new Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
-      new Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
+      Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
+      Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
+      Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
 
-      new Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
-      new Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
-      new Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
+      Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
+      Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
+      Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
 
-      new Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
-      new Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
-      new Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight))
+      Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
+      Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
+      Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight))
     ))
   }
 
   it should "return zones in full board" in {
     Z_9.all map { fullBoard.zone } should be(List(
-      new Zone(Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine)),
-      new Zone(Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three)),
-      new Zone(Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six)),
+      Zone(Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine)),
+      Zone(Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three)),
+      Zone(Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six)),
 
-      new Zone(Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One)),
-      new Zone(Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four)),
-      new Zone(Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven)),
+      Zone(Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One)),
+      Zone(Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four)),
+      Zone(Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven)),
 
-      new Zone(Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two)),
-      new Zone(Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five)),
-      new Zone(Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight))
+      Zone(Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two)),
+      Zone(Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five)),
+      Zone(Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight))
     ))
   }
 
   it should "return zones in invalid board" in {
     Z_9.all map { invalidBoard.zone } should be(List(
-      new Zone(Some(One), Some(One), None, None, Some(Four), None, None, None, Some(Seven)),
-      new Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
-      new Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
+      Zone(Some(One), Some(One), None, None, Some(Four), None, None, None, Some(Seven)),
+      Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
+      Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
 
-      new Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
-      new Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
-      new Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
+      Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight)),
+      Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
+      Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
 
-      new Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
-      new Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
-      new Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight))
+      Zone(Some(Three), None, None, None, Some(Six), None, None, None, Some(Nine)),
+      Zone(Some(One), None, None, None, Some(Four), None, None, None, Some(Seven)),
+      Zone(Some(Two), None, None, None, Some(Five), None, None, None, Some(Eight))
     ))
   }
 
+  it should "return valid for empty board" in {
+    emptyBoard.valid should be(true)
+  }
+
+  it should "return valid for partial board" in {
+    partialBoard.valid should be(true)
+  }
+
+  it should "return valid for full board" in {
+    fullBoard.valid should be(true)
+  }
+
+  it should "return invalid for invalid board" in {
+    invalidBoard.valid should be(false)
+  }
+
+  it should "return unsolved for empty board" in {
+    emptyBoard.solved should be(false)
+  }
+
+  it should "return unsolved for partial board" in {
+    partialBoard.solved should be(false)
+  }
+
+  it should "return solved for full board" in {
+    fullBoard.solved should be(true)
+  }
+
+  it should "return unsolved for invalid board" in {
+    invalidBoard.solved should be(false)
+  }
+
+  it should "have equality test based on immutability" in {
+    emptyBoard should be(
+      Board(
+        Row(None, None, None, None, None, None, None, None, None),
+        Row(None, None, None, None, None, None, None, None, None),
+        Row(None, None, None, None, None, None, None, None, None),
+
+        Row(None, None, None, None, None, None, None, None, None),
+        Row(None, None, None, None, None, None, None, None, None),
+        Row(None, None, None, None, None, None, None, None, None),
+
+        Row(None, None, None, None, None, None, None, None, None),
+        Row(None, None, None, None, None, None, None, None, None),
+        Row(None, None, None, None, None, None, None, None, None)
+      )
+    )
+
+    partialBoard should be(
+      Board(
+        Row(Some(One), None, None, Some(Two), None, None, Some(Three), None, None),
+        Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+        Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+
+        Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+        Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+        Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+
+        Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+        Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+        Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      )
+    )
+
+    fullBoard should be(
+      Board(
+        Row(Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine)),
+        Row(Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three)),
+        Row(Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six)),
+
+        Row(Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One)),
+        Row(Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four)),
+        Row(Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven)),
+
+        Row(Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two)),
+        Row(Some(Six), Some(Seven), Some(Eight), Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five)),
+        Row(Some(Nine), Some(One), Some(Two), Some(Three), Some(Four), Some(Five), Some(Six), Some(Seven), Some(Eight))
+      )
+    )
+
+    invalidBoard should be(
+      Board(
+        Row(Some(One), Some(One), None, Some(Two), None, None, Some(Three), None, None),
+        Row(None, Some(Four), None, None, Some(Five), None, None, Some(Six), None),
+        Row(None, None, Some(Seven), None, None, Some(Eight), None, None, Some(Nine)),
+
+        Row(Some(Two), None, None, Some(Three), None, None, Some(One), None, None),
+        Row(None, Some(Five), None, None, Some(Six), None, None, Some(Four), None),
+        Row(None, None, Some(Eight), None, None, Some(Nine), None, None, Some(Seven)),
+
+        Row(Some(Three), None, None, Some(One), None, None, Some(Two), None, None),
+        Row(None, Some(Six), None, None, Some(Four), None, None, Some(Five), None),
+        Row(None, None, Some(Nine), None, None, Some(Seven), None, None, Some(Eight))
+      )
+    )
+  }
 }
