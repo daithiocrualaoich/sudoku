@@ -6,10 +6,10 @@ sealed abstract class Z_9(val representative: Int) {
 }
 
 object Z_9 {
-  val all = List(Nine, One, Two, Three, Four, Five, Six, Seven, Eight)
+  val all = List(One, Two, Three, Four, Five, Six, Seven, Eight, Nine)
 
   def apply(i: Int): Z_9 = fromInt(i)
-  def fromInt(i: Int): Z_9 = all(i % 9)
+  def fromInt(i: Int): Z_9 = all.rotate(8)(i % 9)
 }
 
 object One extends Z_9(1)
