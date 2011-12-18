@@ -83,4 +83,38 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
 
   lazy val valid: Boolean = (rows ++ columns ++ zones) forall { _.valid }
   lazy val solved: Boolean = (rows ++ columns ++ zones) forall { _.solved }
+
+  override def toString = {
+    val rowStrings = rows map { row =>
+      List(
+        row.first map { _.toInt } getOrElse " ",
+        row.second map { _.toInt } getOrElse " ",
+        row.third map { _.toInt } getOrElse " ",
+        "|",
+        row.fourth map { _.toInt } getOrElse " ",
+        row.fifth map { _.toInt } getOrElse " ",
+        row.sixth map { _.toInt } getOrElse " ",
+        "|",
+        row.seventh map { _.toInt } getOrElse " ",
+        row.eighth map { _.toInt } getOrElse " ",
+        row.ninth map { _.toInt } getOrElse " "
+      ).mkString(" ", " ", " ")
+    }
+
+    val allRows = List(
+      rowStrings(0),
+      rowStrings(1),
+      rowStrings(2),
+      "-----------------------",
+      rowStrings(3),
+      rowStrings(4),
+      rowStrings(5),
+      "-----------------------",
+      rowStrings(6),
+      rowStrings(7),
+      rowStrings(8)
+    )
+
+    allRows mkString "\n"
+  }
 }
