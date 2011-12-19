@@ -96,7 +96,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
     // _ _ 2 | _ 8 _ | 6 _ _
     //-----------------------
     // 4 _ _ | 9 _ 3 | _ _ 1
-    // _ 3 _ | _ _ 7 | _ 6 _
+    // _ 3 _ | _ _ _ | _ 6 _
     // _ _ 6 | _ _ _ | 8 _ _
     Board(
       Row(None, None, Some(Nine), None, None, None, Some(Seven), None, None),
@@ -108,7 +108,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
       Row(None, None, Some(Two), None, Some(Eight), None, Some(Six), None, None),
 
       Row(Some(Four), None, None, Some(Nine), None, Some(Three), None, None, Some(One)),
-      Row(None, Some(Three), None, None, None, Some(Seven), None, Some(Six), None),
+      Row(None, Some(Three), None, None, None, None, None, Some(Six), None),
       Row(None, None, Some(Six), None, None, None, Some(Eight), None, None)
     )
   }
@@ -182,25 +182,25 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
 
     val graph = Sudoku.graph(sudoku2059hard)
 
-    graph.getNodes((One, One)).value should be(Set(Six))
-    graph.getNodes((Two, One)).value should be(Set(Nine))
-    graph.getNodes((Three, One)).value should be(Set(Eight))
-    graph.getNodes((Four, One)).value should be(Set(One, Two, Three, Four, Seven))
-    graph.getNodes((Five, One)).value should be(Set(One, Two, Three, Four, Seven))
-    graph.getNodes((Six, One)).value should be(Set(One, Two, Three))
-    graph.getNodes((Seven, One)).value should be(Set(One, Three, Four))
-    graph.getNodes((Eight, One)).value should be(Set(One, Four, Five, Seven))
-    graph.getNodes((Nine, One)).value should be(Set(Three, Four, Five, Seven))
+    graph.getNode((One, One)).get.value should be(Set(Six))
+    graph.getNode((Two, One)).get.value should be(Set(Nine))
+    graph.getNode((Three, One)).get.value should be(Set(Eight))
+    graph.getNode((Four, One)).get.value should be(Set(One, Two, Three, Four, Seven))
+    graph.getNode((Five, One)).get.value should be(Set(One, Two, Three, Four, Seven))
+    graph.getNode((Six, One)).get.value should be(Set(One, Two, Three))
+    graph.getNode((Seven, One)).get.value should be(Set(One, Three, Four))
+    graph.getNode((Eight, One)).get.value should be(Set(One, Four, Five, Seven))
+    graph.getNode((Nine, One)).get.value should be(Set(Three, Four, Five, Seven))
 
-    graph.getNodes((One, Two)).value should be(Set(Four))
-    graph.getNodes((Two, Two)).value should be(Set(One, Seven))
-    graph.getNodes((Three, Two)).value should be(Set(Seven))
-    graph.getNodes((Four, Two)).value should be(Set(Five))
-    graph.getNodes((Five, Two)).value should be(Set(One, Three, Seven, Eight, Nine))
-    graph.getNodes((Six, Two)).value should be(Set(One, Three, Eight, Nine))
-    graph.getNodes((Seven, Two)).value should be(Set(One, Three, Six, Eight, Nine))
-    graph.getNodes((Eight, Two)).value should be(Set(Two))
-    graph.getNodes((Nine, Two)).value should be(Set(Three, Seven, Eight))
+    graph.getNode((One, Two)).get.value should be(Set(Four))
+    graph.getNode((Two, Two)).get.value should be(Set(One, Seven))
+    graph.getNode((Three, Two)).get.value should be(Set(Seven))
+    graph.getNode((Four, Two)).get.value should be(Set(Five))
+    graph.getNode((Five, Two)).get.value should be(Set(One, Three, Seven, Eight, Nine))
+    graph.getNode((Six, Two)).get.value should be(Set(One, Three, Eight, Nine))
+    graph.getNode((Seven, Two)).get.value should be(Set(One, Three, Six, Eight, Nine))
+    graph.getNode((Eight, Two)).get.value should be(Set(Two))
+    graph.getNode((Nine, Two)).get.value should be(Set(Three, Seven, Eight))
 
     // TODO: Finish...
 
@@ -242,83 +242,113 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "solve sudoku2055medium" in {
-    Sudoku.solve(sudoku2055medium) should be(Some(
+    val solution = Sudoku.solve(sudoku2055medium)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(
       Board(
-        sudoku2055medium.first,
-        sudoku2055medium.second,
-        sudoku2055medium.third,
-        sudoku2055medium.fourth,
-        sudoku2055medium.fifth,
-        sudoku2055medium.sixth,
-        sudoku2055medium.seventh,
-        sudoku2055medium.eighth,
-        sudoku2055medium.ninth
+        Row(Some(Four), Some(Six), Some(Seven), Some(Two), Some(Five), Some(Eight), Some(Nine), Some(One), Some(Three)),
+        Row(Some(One), Some(Two), Some(Five), Some(Nine), Some(Seven), Some(Three), Some(Six), Some(Eight), Some(Four)),
+        Row(Some(Nine), Some(Three), Some(Eight), Some(One), Some(Four), Some(Six), Some(Five), Some(Two), Some(Seven)),
+        Row(Some(Five), Some(One), Some(Three), Some(Seven), Some(Two), Some(Four), Some(Eight), Some(Nine), Some(Six)),
+        Row(Some(Two), Some(Nine), Some(Four), Some(Eight), Some(Six), Some(One), Some(Three), Some(Seven), Some(Five)),
+        Row(Some(Seven), Some(Eight), Some(Six), Some(Five), Some(Three), Some(Nine), Some(Two), Some(Four), Some(One)),
+        Row(Some(Six), Some(Four), Some(Two), Some(Three), Some(Eight), Some(Seven), Some(One), Some(Five), Some(Nine)),
+        Row(Some(Three), Some(Five), Some(One), Some(Four), Some(Nine), Some(Two), Some(Seven), Some(Six), Some(Eight)),
+        Row(Some(Eight), Some(Seven), Some(Nine), Some(Six), Some(One), Some(Five), Some(Four), Some(Three), Some(Two))
       )
-    ))
+    )
   }
 
   it should "solve sudoku2056medium" in {
-    Sudoku.solve(sudoku2056medium) should be(Some(
+    val solution = Sudoku.solve(sudoku2056medium)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(
       Board(
-        sudoku2056medium.first,
-        sudoku2056medium.second,
-        sudoku2056medium.third,
-        sudoku2056medium.fourth,
-        sudoku2056medium.fifth,
-        sudoku2056medium.sixth,
-        sudoku2056medium.seventh,
-        sudoku2056medium.eighth,
-        sudoku2056medium.ninth
+        Row(Some(One), Some(Two), Some(Seven), Some(Four), Some(Eight), Some(Five), Some(Nine), Some(Six), Some(Three)),
+        Row(Some(Nine), Some(Four), Some(Eight), Some(Six), Some(One), Some(Three), Some(Seven), Some(Two), Some(Five)),
+        Row(Some(Three), Some(Five), Some(Six), Some(Nine), Some(Seven), Some(Two), Some(One), Some(Four), Some(Eight)),
+        Row(Some(Eight), Some(Nine), Some(Four), Some(One), Some(Five), Some(Seven), Some(Six), Some(Three), Some(Two)),
+        Row(Some(Six), Some(Seven), Some(Two), Some(Three), Some(Nine), Some(Four), Some(Five), Some(Eight), Some(One)),
+        Row(Some(Five), Some(Three), Some(One), Some(Two), Some(Six), Some(Eight), Some(Four), Some(Seven), Some(Nine)),
+        Row(Some(Seven), Some(Eight), Some(Three), Some(Five), Some(Four), Some(One), Some(Two), Some(Nine), Some(Six)),
+        Row(Some(Two), Some(One), Some(Nine), Some(Seven), Some(Three), Some(Six), Some(Eight), Some(Five), Some(Four)),
+        Row(Some(Four), Some(Six), Some(Five), Some(Eight), Some(Two), Some(Nine), Some(Three), Some(One), Some(Seven))
       )
-    ))
+    )
   }
 
   it should "solve sudoku2057hard" in {
-    Sudoku.solve(sudoku2057hard) should be(Some(
+    val solution = Sudoku.solve(sudoku2057hard)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(
       Board(
-        sudoku2057hard.first,
-        sudoku2057hard.second,
-        Row(Some(Three), None, Some(One), Some(Seven), None, Some(Four), None, None, Some(Eight)),
-        sudoku2057hard.fourth,
-        sudoku2057hard.fifth,
-        Row(None, None, Some(Two), None, Some(Eight), Some(Nine), Some(Six), None, None),
-        sudoku2057hard.seventh,
-        sudoku2057hard.eighth,
-        sudoku2057hard.ninth
+        Row(Some(Two), Some(Eight), Some(Nine), Some(Five), Some(Three), Some(Six), Some(Seven), Some(One), Some(Four)),
+        Row(Some(Seven), Some(Five), Some(Four), Some(Eight), Some(Nine), Some(One), Some(Three), Some(Two), Some(Six)),
+        Row(Some(Three), Some(Six), Some(One), Some(Seven), Some(Two), Some(Four), Some(Nine), Some(Five), Some(Eight)),
+        Row(Some(Eight), Some(Four), Some(Seven), Some(Six), Some(Five), Some(Two), Some(One), Some(Nine), Some(Three)),
+        Row(Some(Six), Some(Nine), Some(Three), Some(One), Some(Four), Some(Seven), Some(Two), Some(Eight), Some(Five)),
+        Row(Some(Five), Some(One), Some(Two), Some(Three), Some(Eight), Some(Nine), Some(Six), Some(Four), Some(Seven)),
+        Row(Some(Four), Some(Two), Some(Eight), Some(Nine), Some(Six), Some(Three), Some(Five), Some(Seven), Some(One)),
+        Row(Some(One), Some(Three), Some(Five), Some(Two), Some(Seven), Some(Eight), Some(Four), Some(Six), Some(Nine)),
+        Row(Some(Nine), Some(Seven), Some(Six), Some(Four), Some(One), Some(Five), Some(Eight), Some(Three), Some(Two))
       )
-    ))
+    )
   }
 
   it should "solve sudoku2058hard" in {
-    Sudoku.solve(sudoku2058hard) should be(Some(
+    val solution = Sudoku.solve(sudoku2058hard)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(
       Board(
-        sudoku2058hard.first,
-        sudoku2058hard.second,
-        sudoku2058hard.third,
-        sudoku2058hard.fourth,
-        sudoku2058hard.fifth,
-        sudoku2058hard.sixth,
-        sudoku2058hard.seventh,
-        sudoku2058hard.eighth,
-        sudoku2058hard.ninth
+        Row(Some(Three), Some(Eight), Some(Four), Some(One), Some(Seven), Some(Two), Some(Five), Some(Six), Some(Nine)),
+        Row(Some(Seven), Some(Two), Some(Nine), Some(Five), Some(Six), Some(Four), Some(Three), Some(One), Some(Eight)),
+        Row(Some(Six), Some(Five), Some(One), Some(Nine), Some(Three), Some(Eight), Some(Seven), Some(Four), Some(Two)),
+        Row(Some(Five), Some(Four), Some(Three), Some(Seven), Some(Two), Some(Nine), Some(One), Some(Eight), Some(Six)),
+        Row(Some(Nine), Some(Seven), Some(Eight), Some(Three), Some(One), Some(Six), Some(Two), Some(Five), Some(Four)),
+        Row(Some(One), Some(Six), Some(Two), Some(Four), Some(Eight), Some(Five), Some(Nine), Some(Seven), Some(Three)),
+        Row(Some(Four), Some(One), Some(Seven), Some(Six), Some(Nine), Some(Three), Some(Eight), Some(Two), Some(Five)),
+        Row(Some(Eight), Some(Nine), Some(Five), Some(Two), Some(Four), Some(Seven), Some(Six), Some(Three), Some(One)),
+        Row(Some(Two), Some(Three), Some(Six), Some(Eight), Some(Five), Some(One), Some(Four), Some(Nine), Some(Seven))
       )
-    ))
+    )
   }
 
   it should "solve sudoku2059hard" in {
-    Sudoku.solve(sudoku2059hard) should be(Some(
+    val solution = Sudoku.solve(sudoku2059hard)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(
       Board(
-        sudoku2059hard.first,
-        Row(Some(Four), Some(One), Some(Seven), Some(Five), None, None, None, Some(Two), None),
-        sudoku2059hard.third,
-        sudoku2059hard.fourth,
-        sudoku2059hard.fifth,
-        sudoku2059hard.sixth,
-        sudoku2059hard.seventh,
-        sudoku2059hard.eighth,
-        sudoku2059hard.ninth
+        Row(Some(Six), Some(Nine), Some(Eight), Some(Seven), Some(Two), Some(One), Some(Four), Some(Five), Some(Three)),
+        Row(Some(Four), Some(One), Some(Seven), Some(Five), Some(Nine), Some(Three), Some(Six), Some(Two), Some(Eight)),
+        Row(Some(Three), Some(Two), Some(Five), Some(Six), Some(Four), Some(Eight), Some(Nine), Some(One), Some(Seven)),
+        Row(Some(Five), Some(Six), Some(One), Some(Three), Some(Seven), Some(Nine), Some(Two), Some(Eight), Some(Four)),
+        Row(Some(Nine), Some(Seven), Some(Three), Some(Four), Some(Eight), Some(Two), Some(One), Some(Six), Some(Five)),
+        Row(Some(Two), Some(Eight), Some(Four), Some(One), Some(Six), Some(Five), Some(Seven), Some(Three), Some(Nine)),
+        Row(Some(Eight), Some(Five), Some(Six), Some(Nine), Some(One), Some(Four), Some(Three), Some(Seven), Some(Two)),
+        Row(Some(One), Some(Three), Some(Nine), Some(Two), Some(Five), Some(Seven), Some(Eight), Some(Four), Some(Six)),
+        Row(Some(Seven), Some(Four), Some(Two), Some(Eight), Some(Three), Some(Six), Some(Five), Some(Nine), Some(One))
       )
-    ))
+    )
   }
 
 }
