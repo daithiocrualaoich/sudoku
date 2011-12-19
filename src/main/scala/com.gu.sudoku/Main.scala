@@ -30,7 +30,7 @@ object Main {
       )
     }
 
-    val solution = Sudoku.solve(sudoku2060easy)
+    val solution = Solver.solve(sudoku2060easy)
 
     println(solution.get)
   }

@@ -3,7 +3,7 @@ package com.gu.sudoku
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
-class SudokuTest extends FlatSpec with ShouldMatchers {
+class SolverTest extends FlatSpec with ShouldMatchers {
 
   val sudoku2054easy = {
     // _ 2 7 | 5 _ _ | _ _ _
@@ -167,7 +167,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
     )
   }
 
-  "Sudoku" should "calculate graphs" in {
+  "Solver" should "calculate graphs" in {
     // 6 9 8 | _ _ _ | _ _ _
     // 4 _ _ | 5 _ _ | _ 2 _
     // 3 _ _ | 6 _ _ | _ _ _
@@ -180,7 +180,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
     // _ 3 _ | _ _ 7 | _ _ 6
     // _ _ _ | _ _ _ | 5 9 1
 
-    val graph = Sudoku.graph(sudoku2059hard)
+    val graph = Solver.graph(sudoku2059hard)
 
     graph.getNode((One, One)).get.value should be(Set(Six))
     graph.getNode((Two, One)).get.value should be(Set(Nine))
@@ -204,7 +204,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
 
     // TODO: Finish...
 
-    Sudoku.board(graph) should be(
+    Solver.board(graph) should be(
       Board(
         sudoku2059hard.first,
         Row(Some(Four), None, Some(Seven), Some(Five), None, None, None, Some(Two), None),
@@ -220,7 +220,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "solve sudoku2054easy" in {
-    val solution = Sudoku.solve(sudoku2054easy)
+    val solution = Solver.solve(sudoku2054easy)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -242,7 +242,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "solve sudoku2055medium" in {
-    val solution = Sudoku.solve(sudoku2055medium)
+    val solution = Solver.solve(sudoku2055medium)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -264,7 +264,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "solve sudoku2056medium" in {
-    val solution = Sudoku.solve(sudoku2056medium)
+    val solution = Solver.solve(sudoku2056medium)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -286,7 +286,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "solve sudoku2057hard" in {
-    val solution = Sudoku.solve(sudoku2057hard)
+    val solution = Solver.solve(sudoku2057hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -308,7 +308,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "solve sudoku2058hard" in {
-    val solution = Sudoku.solve(sudoku2058hard)
+    val solution = Solver.solve(sudoku2058hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -330,7 +330,7 @@ class SudokuTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "solve sudoku2059hard" in {
-    val solution = Sudoku.solve(sudoku2059hard)
+    val solution = Solver.solve(sudoku2059hard)
 
     solution should be('defined)
     solution.get.valid should be(true)

@@ -1,34 +1,40 @@
 package com.gu.sudoku
 
-object Sudoku {
+object Solver {
+
+  type SudokuGraphNode = Node[(Z_9, Z_9), Set[Z_9]]
+  type SudokuGraphEdge = Edge[(Z_9, Z_9), Set[Z_9]]
 
   type SudokuGraph = Graph[(Z_9, Z_9), Set[Z_9]]
 
   def graph(board: Board): SudokuGraph = {
-    val g = new SudokuGraph
     def candidates(i: Z_9, j: Z_9): Set[Z_9] = {
       board(i, j) map { Set(_) } getOrElse {
         Z_9.all.toSet -- (board.row(j).values ++ board.column(i).values ++ board.zone(i, j).values)
       }
     }
 
+    var g = new SudokuGraph
+
+    // Nodes
     for (i <- Z_9.all) {
       for (j <- Z_9.all) {
-        g.addNode((i, j), candidates(i, j))
+        g = g.addNode((i, j), candidates(i, j))
       }
     }
 
+    // Edges
     for (i <- Z_9.all) {
       for (j <- Z_9.all) {
 
         // row neighbours
         (Z_9.all filter { _ > i }) foreach { k =>
-          g.addEdge((i, j), (k, j))
+          g = g.addEdge((i, j), (k, j))
         }
 
         // column neighbours
         (Z_9.all filter { _ > j }) foreach { k =>
-          g.addEdge((i, j), (i, k))
+          g = g.addEdge((i, j), (i, k))
         }
 
         // zone neighbours
@@ -39,10 +45,9 @@ object Sudoku {
             val rowZ_9 = Z_9.fromInt(zoneUpperLeftRow + row)
             val colZ_9 = Z_9.fromInt(zoneUpperLeftCol + col)
 
-            if (rowZ_9 > i || (rowZ_9 == i && colZ_9 > j)) {
-              g.addEdge((i, j), (colZ_9, rowZ_9))
+            if (rowZ_9 > j || (rowZ_9 == j && colZ_9 > i)) {
+              g = g.addEdge((i, j), (colZ_9, rowZ_9))
             }
-
           }
         }
       }
@@ -73,29 +78,11 @@ object Sudoku {
       ))
     }).toMap
 
-    Board(
-      rows(One),
-      rows(Two),
-      rows(Three),
-      rows(Four),
-      rows(Five),
-      rows(Six),
-      rows(Seven),
-      rows(Eight),
-      rows(Nine)
-    )
+    Board(rows(One), rows(Two), rows(Three), rows(Four), rows(Five), rows(Six), rows(Seven), rows(Eight), rows(Nine))
   }
 
   def iterateEliminateByRowColumnAndZoneElements(puzzle: SudokuGraph): SudokuGraph = {
-    var previous = puzzle
-    var current = eliminateByRowColumnAndZoneElements(previous)
-
-    while (board(current) != board(previous)) {
-      previous = current
-      current = eliminateByRowColumnAndZoneElements(previous)
-    }
-
-    current
+    iterate(puzzle) { eliminateByRowColumnAndZoneElements }
   }
 
   def eliminateByRowColumnAndZoneElements(puzzle: SudokuGraph): SudokuGraph = {
@@ -107,74 +94,57 @@ object Sudoku {
   }
 
   def iterateOnlyPossiblePlacing(puzzle: SudokuGraph): SudokuGraph = {
-    var previous = puzzle
-    var current = eliminateByOnlyPossiblePlacing(previous)
-
-    while (current._1) {
-      previous = current._2
-      current = eliminateByOnlyPossiblePlacing(previous)
-    }
-
-    current._2
+    iterate(puzzle) { eliminateByOnlyPossiblePlacing }
   }
 
-  def eliminateByOnlyPossiblePlacing(puzzle: SudokuGraph): (Boolean, SudokuGraph) = {
+  def eliminateByOnlyPossiblePlacing(puzzle: SudokuGraph): SudokuGraph = {
     // For each exclusion area, place elements that have only one possible placing
-    val g = puzzle.copy()
-    var changed = false
+    var g = puzzle
 
-    def eliminateBy(nodes: List[g.Node]): Boolean = {
-      var updated = false
-      val candidateSets: List[(g.Node, List[Z_9])] = nodes map { node => (node, node.value.toList) }
-      val reverseIndexCandidateSets: List[(Z_9, g.Node)] = candidateSets flatMap {
+    def eliminateBy(puzzle: SudokuGraph, nodes: List[SudokuGraphNode]): SudokuGraph = {
+      var g = puzzle
+
+      val candidateSets: List[(SudokuGraphNode, List[Z_9])] = nodes map { node => (node, node.value.toList) }
+
+      val reverseIndexCandidateSets: List[(Z_9, SudokuGraphNode)] = candidateSets flatMap {
         case (node, candidates) => candidates map { candidate => (candidate, node) }
       }
-
-      val reverseIndexCandidateSetsLookup: Map[Z_9, List[(Z_9, g.Node)]] = reverseIndexCandidateSets groupBy {
+      val reverseIndexCandidateSetsLookup: Map[Z_9, List[(Z_9, SudokuGraphNode)]] = reverseIndexCandidateSets groupBy {
         case (candidate, _) => candidate
       }
 
-      val singlePlacements: List[(g.Node, Z_9)] = reverseIndexCandidateSetsLookup.toList collect {
+      val singlePlacements: List[(SudokuGraphNode, Z_9)] = reverseIndexCandidateSetsLookup.toList collect {
         case (candidate, head :: Nil) => (head._2, candidate)
       }
-      val newSinglePlacements: List[(g.Node, Z_9)] = singlePlacements filter {
+      val newSinglePlacements: List[(SudokuGraphNode, Z_9)] = singlePlacements filter {
         case (node, _) => node.value.size != 1
       }
 
       newSinglePlacements foreach {
         case (node, newValue) =>
-          val neighbours: Set[g.Node] = node.neighbours -- Set(node)
+          val neighbours: Set[SudokuGraphNode] = g.neighbours(node) -- Set(node)
           val neighboursToUpdate = neighbours filter { _.value contains newValue }
 
           neighboursToUpdate foreach { neighbour =>
-            g.updateNode(neighbour.label, neighbour.value -- Set(newValue))
-            updated = true
+            g = g.updateNode(neighbour.label, neighbour.value -- Set(newValue))
           }
 
-          g.updateNode(node.label, Set(newValue))
+          g = g.updateNode(node.label, Set(newValue))
       }
 
-      updated
+      g
     }
 
     // Eliminate by rows
     for (row <- Z_9.all) {
-      val nodes: List[g.Node] = Z_9.all map { col => g.getNode(col, row).get }
-
-      val updated = eliminateBy(nodes)
-      if (updated) {
-        changed = true
-      }
+      val nodes: List[SudokuGraphNode] = Z_9.all map { col => g.getNode(col, row).get }
+      g = eliminateBy(g, nodes)
     }
 
     // Eliminate by columns
     for (col <- Z_9.all) {
-      val nodes: List[g.Node] = Z_9.all map { row => g.getNode(col, row).get }
-
-      val updated = eliminateBy(nodes)
-      if (updated) {
-        changed = true
-      }
+      val nodes: List[SudokuGraphNode] = Z_9.all map { row => g.getNode(col, row).get }
+      g = eliminateBy(g, nodes)
     }
 
     // Eliminate by zones
@@ -189,59 +159,45 @@ object Sudoku {
           }
         }
 
-        val nodes: List[g.Node] = indices.toList map { case (col, row) => g.getNode(col, row).get }
-
-        val updated = eliminateBy(nodes)
-        if (updated) {
-          changed = true
-        }
+        val nodes: List[SudokuGraphNode] = indices.toList map { case (col, row) => g.getNode(col, row).get }
+        g = eliminateBy(g, nodes)
       }
     }
 
-    (changed, g)
+    g
   }
 
   def iterateExploitTwoElementCoverings(puzzle: SudokuGraph): SudokuGraph = {
-    var previous = puzzle
-    var current = exploitTwoElementCoverings(previous)
-
-    while (current._1) {
-      previous = current._2
-      current = exploitTwoElementCoverings(previous)
-    }
-
-    current._2
+    iterate(puzzle) { exploitTwoElementCoverings }
   }
 
-  def exploitTwoElementCoverings(puzzle: SudokuGraph): (Boolean, SudokuGraph) = {
+  def exploitTwoElementCoverings(puzzle: SudokuGraph): SudokuGraph = {
     // Any pair of nodes which have the same two possible candidate values
     // excludes any node which is a neighbour of both from having either
     // of these values.    
-    val g: Graph[(Z_9, Z_9), Set[Z_9]] = puzzle.copy()
-    var changed = false
+    var g = puzzle
 
-    val nodesWithTwoElementCandidateSets = g.getNodes filter { _.value.size == 2 }
-    val partitionedByCandidateSets: Map[Set[Z_9], List[g.Node]] = nodesWithTwoElementCandidateSets groupBy { _.value }
-    val nonSingletonPartitions: List[List[g.Node]] = (partitionedByCandidateSets.values filter { _.size > 1 }).toList
+    val nodesWithTwoElementCandidateSets: List[SudokuGraphNode] = g.nodes.toList filter { _.value.size == 2 }
+    val partitionedByCandidateSets: Map[Set[Z_9], List[SudokuGraphNode]] = nodesWithTwoElementCandidateSets groupBy { _.value }
+    val nonSingletonPartitions: List[List[SudokuGraphNode]] = (partitionedByCandidateSets.values filter { _.size > 1 }).toList
 
-    val twoElementCoverings: List[(g.Node, g.Node)] = nonSingletonPartitions flatMap { partition =>
+    val twoElementCoverings: List[(SudokuGraphNode, SudokuGraphNode)] = nonSingletonPartitions flatMap { partition =>
       val crossProduct = partition flatMap { x => partition map { y => (x, y) } }
-      crossProduct filter { case (n1, n2) => n1.neighbours contains n2 }
+      crossProduct filter { case (n1, n2) => g.neighbours(n1) contains n2 }
     }
 
     twoElementCoverings foreach {
       case (n1, n2) =>
         val coveringElements: Set[Z_9] = n1.value ++ n2.value
-        val commonNeighbours: Set[g.Node] = (n1.neighbours intersect n2.neighbours) -- Set(n1, n2)
+        val commonNeighbours: Set[SudokuGraphNode] = (g.neighbours(n1) intersect g.neighbours(n2)) -- Set(n1, n2)
         val neighboursToUpdate = commonNeighbours filter { _.value.intersect(coveringElements).size > 0 }
 
         neighboursToUpdate foreach { node =>
-          g.updateNode(node.label, node.value -- coveringElements)
-          changed = true
+          g = g.updateNode(node.label, node.value -- coveringElements)
         }
     }
 
-    (changed, g)
+    g
   }
 
   def solveByIterateEliminateByRowColumnAndZoneElements(puzzle: SudokuGraph): Option[SudokuGraph] = {
@@ -249,27 +205,19 @@ object Sudoku {
   }
 
   def solveByIterateEliminateByRowColumnAndZoneElementsAndOnlyPossiblePlacing(puzzle: SudokuGraph): Option[SudokuGraph] = {
-    var previous = puzzle
-    var current = iterateOnlyPossiblePlacing(iterateEliminateByRowColumnAndZoneElements(previous))
-
-    while (board(current) != board(previous)) {
-      previous = current
-      current = iterateOnlyPossiblePlacing(iterateEliminateByRowColumnAndZoneElements(previous))
+    val solution = iterate(puzzle) {
+      (iterateEliminateByRowColumnAndZoneElements _) andThen iterateOnlyPossiblePlacing
     }
 
-    Some(current) filter { graph => board(graph).valid }
+    Some(solution) filter { graph => board(graph).valid }
   }
 
   def solveByIterateEliminateByRowColumnAndZoneElementsAndOnlyPossiblePlacingAndExploitTwoElementCoverings(puzzle: SudokuGraph): Option[SudokuGraph] = {
-    var previous = puzzle
-    var current = iterateExploitTwoElementCoverings(iterateOnlyPossiblePlacing(iterateEliminateByRowColumnAndZoneElements(previous)))
-
-    while (board(current) != board(previous)) {
-      previous = current
-      current = iterateExploitTwoElementCoverings(iterateOnlyPossiblePlacing(iterateEliminateByRowColumnAndZoneElements(previous)))
+    val solution = iterate(puzzle) {
+      (iterateEliminateByRowColumnAndZoneElements _) andThen iterateOnlyPossiblePlacing andThen iterateExploitTwoElementCoverings
     }
 
-    Some(current) filter { graph => board(graph).valid }
+    Some(solution) filter { graph => board(graph).valid }
   }
 
   def solve(puzzle: Board): Option[Board] = {

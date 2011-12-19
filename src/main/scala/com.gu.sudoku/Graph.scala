@@ -1,68 +1,43 @@
 package com.gu.sudoku
 
-import scala.collection.mutable.{ Map => MutableMap, Set => MutableSet }
+case class Node[T, S](label: T, value: S)
 
-class Graph[T, S] {
-  case class Edge(from: Node, to: Node) {
-    lazy val nodes = Set(from, to)
-    override def toString = "%s ---> %s".format(from, to)
+case class Edge[T, S](from: Node[T, S], to: Node[T, S]) {
+  lazy val nodes = Set(from, to)
+  def incidentOn(node: Node[T, S]): Boolean = nodes contains node
+}
+
+case class Graph[T, S](
+    nodes: Set[Node[T, S]] = Set.empty[Node[T, S]],
+    edges: Set[Edge[T, S]] = Set.empty[Edge[T, S]]) {
+
+  def neighbours(node: Node[T, S]): Set[Node[T, S]] = (edges filter { _ incidentOn node } flatMap { _.nodes }) -- Set(node)
+
+  def addNode(label: T, value: S): Graph[T, S] = Graph(nodes + Node(label, value), edges)
+  def getNode(label: T): Option[Node[T, S]] = nodes find { _.label == label }
+  def updateNode(label: T, value: S): Graph[T, S] = getNode(label) match {
+    case Some(oldNode) =>
+      // Graph needs a bit of surgery in this case
+      val newNode = Node(label, value)
+
+      val oldEdges = edges filter { _ incidentOn oldNode }
+      val newEdges = oldEdges map { edge =>
+        // Meh... graph is undirected
+        val target = (edge.nodes - oldNode).head
+        Edge(newNode, target)
+      }
+
+      Graph(nodes - oldNode + newNode, edges -- oldEdges ++ newEdges)
+
+    case None =>
+      addNode(label, value)
   }
 
-  case class Node(label: T, value: S) {
-    def neighbours: Set[Node] = (edges filter { _.nodes contains this } flatMap { _.nodes }).toSet - this
-    override def toString = "%s(%s)".format(label, value)
-  }
-
-  // TODO: Make Graph immutable
-  private val nodes: MutableMap[T, Node] = MutableMap()
-  private val edges: MutableSet[Edge] = MutableSet()
-
-  def addNode(label: T, value: S): Node = {
-    val n = new Node(label, value)
-    nodes += (label -> n)
-
-    n
-  }
-
-  def getNodes: List[Node] = nodes.values.toList
-  def getNode(label: T): Option[Node] = nodes.get(label)
-
-  def addEdge(n1: T, n2: T) {
-    edges += Edge(nodes(n1), nodes(n2))
-  }
-
-  def getEdges: Set[Edge] = edges.toSet
-
-  def copy(): Graph[T, S] = {
-    val g = new Graph[T, S]
-
-    nodes foreach {
-      case (_, node) =>
-        g.addNode(node.label, node.value)
-    }
-
-    edges foreach { edge =>
-      g.addEdge(edge.from.label, edge.to.label)
-    }
-
-    g
-  }
-
-  def updateNode(label: T, value: S) {
-    (nodes get label) match {
-      case Some(oldNode) =>
-        val newNode = addNode(label, value)
-
-        edges filter { _.nodes contains oldNode } foreach { edge =>
-          edges remove edge
-          (edge.nodes - oldNode) foreach { neighbour =>
-            addEdge(newNode.label, neighbour.label)
-          }
-        }
-
-      case None => addNode(label, value)
+  def addEdge(n1: T, n2: T): Graph[T, S] = {
+    // Does not add when nodes not present.
+    (getNode(n1), getNode(n2)) match {
+      case (Some(from), Some(to)) => Graph(nodes, edges + Edge(from, to))
+      case _ => this
     }
   }
-
-  override def toString = edges.mkString("\n")
 }
