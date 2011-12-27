@@ -214,22 +214,58 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "determine unpermitted boards" in {
-    val notPermitted =
-      Board("""
-       1 2 3 | _ _ _ | _ _ _
-       4 5 6 | _ _ _ | _ _ _
-       7 8 9 | _ _ _ | _ _ _
-      -----------------------
-       _ _ _ | _ _ _ | _ _ _
-       _ _ _ | _ _ _ | _ _ _
-       _ _ _ | _ _ _ | _ _ _
-      -----------------------
-       _ _ _ | _ _ _ | _ _ _
-       _ _ _ | _ _ _ | _ _ _
-       _ _ _ | _ _ _ | _ _ _
-    """)
+    val notPermitted = Board("""
+         1 2 3 | _ _ _ | _ _ _
+         4 5 6 | _ _ _ | _ _ _
+         7 8 9 | _ _ _ | _ _ _
+        -----------------------
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+        -----------------------
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+      """)
 
+    (Solver.solutions(notPermitted) take 2).size should be(2)
     Solver.isPermitted(notPermitted) should be(false)
+  }
+
+  it should "determine unique solutions" in {
+    Solver.hasUniqueSolution(sudoku2054easy) should be(true)
+    Solver.hasUniqueSolution(sudoku2055medium) should be(true)
+    Solver.hasUniqueSolution(sudoku2056medium) should be(true)
+    Solver.hasUniqueSolution(sudoku2057hard) should be(true)
+    Solver.hasUniqueSolution(sudoku2058hard) should be(true)
+    Solver.hasUniqueSolution(sudoku2059hard) should be(true)
+    Solver.hasUniqueSolution(sudoku2060easy) should be(true)
+    Solver.hasUniqueSolution(sudoku2061medium) should be(true)
+    Solver.hasUniqueSolution(sudoku2062medium) should be(true)
+    Solver.hasUniqueSolution(sudoku2063hard) should be(true)
+    Solver.hasUniqueSolution(sudoku2064hard) should be(true)
+    Solver.hasUniqueSolution(sudoku2065hard) should be(true)
+    Solver.hasUniqueSolution(sudoku2066easy) should be(true)
+    Solver.hasUniqueSolution(sudoku2067medium) should be(true)
+  }
+
+  it should "determine multiple solutions" in {
+    val underconstrained = Board("""
+         1 2 3 | _ _ _ | _ _ _
+         4 5 6 | _ _ _ | _ _ _
+         7 8 9 | _ _ _ | _ _ _
+        -----------------------
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+        -----------------------
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+         _ _ _ | _ _ _ | _ _ _
+      """)
+
+    (Solver.solutions(underconstrained) take 10).size should be(10)
+    Solver.hasUniqueSolution(underconstrained) should be(false)
   }
 
 }

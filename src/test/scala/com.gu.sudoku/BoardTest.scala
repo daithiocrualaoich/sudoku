@@ -5,7 +5,7 @@ import org.scalatest.matchers.ShouldMatchers
 
 class RowTest extends FlatSpec with ShouldMatchers {
 
-  val emptyRow = Row(None, None, None, None, None, None, None, None, None)
+  val emptyRow = Row.empty
   val partialRow = Row(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine))
   val fullRow = Row(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine))
   val invalidRow = partialRow.copy(sixth = Some(Five))
@@ -79,7 +79,7 @@ class RowTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "have equality test based on immutability" in {
-    emptyRow should be(Row(None, None, None, None, None, None, None, None, None))
+    emptyRow should be(Row.empty)
     partialRow should be(Row(Some(Eight), None, None, Some(Five), Some(Four), None, None, Some(One), Some(Nine)))
     fullRow should be(Row(Some(Eight), Some(Seven), Some(Six), Some(Five), Some(Four), Some(Three), Some(Two), Some(One), Some(Nine)))
     invalidRow should be(Row(Some(Eight), None, None, Some(Five), Some(Four), Some(Five), None, Some(One), Some(Nine)))
@@ -269,15 +269,15 @@ class BoardTest extends FlatSpec with ShouldMatchers {
     // _ _ _ | _ _ _ | _ _ _
 
     Board(
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None))
+      Row.empty,
+      Row.empty,
+      Row.empty,
+      Row.empty,
+      Row.empty,
+      Row.empty,
+      Row.empty,
+      Row.empty,
+      Row.empty)
   }
 
   val partialBoard = {
@@ -368,17 +368,17 @@ class BoardTest extends FlatSpec with ShouldMatchers {
 
   it should "return rows in empty board" in {
     Z_9.all map { emptyBoard.row } should be(List(
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
+      Row.empty,
+      Row.empty,
+      Row.empty,
 
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
+      Row.empty,
+      Row.empty,
+      Row.empty,
 
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None),
-      Row(None, None, None, None, None, None, None, None, None)))
+      Row.empty,
+      Row.empty,
+      Row.empty))
   }
 
   it should "return rows in partial board" in {
@@ -673,17 +673,17 @@ class BoardTest extends FlatSpec with ShouldMatchers {
   it should "have equality test based on immutability" in {
     emptyBoard should be(
       Board(
-        Row(None, None, None, None, None, None, None, None, None),
-        Row(None, None, None, None, None, None, None, None, None),
-        Row(None, None, None, None, None, None, None, None, None),
+        Row.empty,
+        Row.empty,
+        Row.empty,
 
-        Row(None, None, None, None, None, None, None, None, None),
-        Row(None, None, None, None, None, None, None, None, None),
-        Row(None, None, None, None, None, None, None, None, None),
+        Row.empty,
+        Row.empty,
+        Row.empty,
 
-        Row(None, None, None, None, None, None, None, None, None),
-        Row(None, None, None, None, None, None, None, None, None),
-        Row(None, None, None, None, None, None, None, None, None)))
+        Row.empty,
+        Row.empty,
+        Row.empty))
 
     partialBoard should be(
       Board(

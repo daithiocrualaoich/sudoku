@@ -112,6 +112,8 @@ case class GraphColouringProblem(graph: SudokuGraph) {
 
     val twoElementCoverings: List[(SudokuGraphNode, SudokuGraphNode)] = nonSingletonPartitions flatMap { partition =>
       partition flatMap { x => partition map { y => (x, y) } }
+    } filter {
+      case (n1, n2) => Set(n1, n2).size == 2
     }
     val connectedTwoElementCoverings = twoElementCoverings filter { case (n1, n2) => g.neighbours(n1) contains n2 }
 
@@ -127,6 +129,77 @@ case class GraphColouringProblem(graph: SudokuGraph) {
     }
 
     GraphColouringProblem(g)
+  }
+
+  def reduceByThreeElementCoverings(): GraphColouringProblem = {
+    // Any triple of completely connected nodes which have only the three possible candidate
+    // values excludes any node which is a neighbour of all from having any of these values.    
+    var g = graph
+
+    val nodesWithTwoOrThreeElementCandidateSets: List[SudokuGraphNode] = g.nodes.toList filter { node => node.value.size == 2 || node.value.size == 3 }
+
+    // Expand out two element candidate sets with all possibles
+    val nodesWithThreeElementCandidateSets: List[SudokuGraphNode] = nodesWithTwoOrThreeElementCandidateSets flatMap { node =>
+      node.value.size match {
+        case 3 => List(node)
+        case 2 => (Z_9.all.toSet -- node.value).toList map { padding => Node[(Z_9, Z_9), Set[Z_9]](node.label, node.value + padding) }
+      }
+    }
+
+    val partitionedByCandidateSets: Map[Set[Z_9], List[SudokuGraphNode]] = nodesWithThreeElementCandidateSets groupBy { _.value }
+    val potentialPartitions: List[List[SudokuGraphNode]] = (partitionedByCandidateSets.values filter { _.size > 2 }).toList
+
+    val threeElementCoverings: List[(SudokuGraphNode, SudokuGraphNode, SudokuGraphNode)] = potentialPartitions flatMap { partition =>
+      partition flatMap { x => partition flatMap { y => partition map { z => (x, y, z) } } }
+    } filter {
+      case (n1, n2, n3) => Set(n1, n2, n3).size == 3
+    }
+
+    val connectedThreeElementCoverings = threeElementCoverings filter {
+      case (n1, n2, n3) =>
+        (Set(n2, n3) subsetOf g.neighbours(n1)) && (Set(n1, n3) subsetOf g.neighbours(n2))
+    }
+
+    connectedThreeElementCoverings foreach {
+      case (n1, n2, n3) =>
+        val coveringElements: Set[Z_9] = n1.value ++ n2.value ++ n3.value
+        val commonNeighbours: Set[SudokuGraphNode] = (g.neighbours(n1) intersect g.neighbours(n2) intersect g.neighbours(n3)) -- Set(n1, n2, n3)
+        val neighboursToUpdate = commonNeighbours filter { _.value.intersect(coveringElements).size > 0 }
+
+        neighboursToUpdate foreach { node =>
+          g = g.updateNodeValue(node.label, node.value -- coveringElements)
+        }
+    }
+
+    GraphColouringProblem(g)
+  }
+
+  def reduceBySearch(): Iterator[GraphColouringProblem] = {
+    // Pick the node with smallest candidate set size > 1 and most constrained neighbours and try alternatives
+    val nodes: Map[Int, List[SudokuGraphNode]] = graph.nodes.toList groupBy { _.value.size }
+
+    val candidateNodes = nodes.toList filter { case (size, _) => size > 1 }
+
+    candidateNodes match {
+      case Nil => Iterator(this)
+      case _ =>
+        println("Reducing by search")
+        val nodesWithSmallestCandidateSetSize = (candidateNodes sortBy { case (size, _) => size }).head._2
+
+        val nodesWithNeighboursCandidateSetSum = nodesWithSmallestCandidateSetSize map { node =>
+          ((graph.neighbours(node).toList map { _.value.size }).sum, node)
+        }
+
+        val node = (nodesWithNeighboursCandidateSetSum sortBy { case (size, _) => -size }).head._2
+
+        println("Assigned values: " + toBoard.numValues)
+        println("Reducing node: " + node.label)
+        println("Reducing values: " + node.value)
+        println()
+        println()
+
+        node.value.toIterator map { value => GraphColouringProblem(graph.updateNodeValue(node.label, Set(value))) }
+    }
   }
 
   lazy val valid = toBoard.valid

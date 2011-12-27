@@ -2,27 +2,31 @@ package com.gu.sudoku
 
 object Solver {
 
-  def iterateReduceByElementCandidateSets(puzzle: GraphColouringProblem): GraphColouringProblem = {
+  private def iterateReduceByElementCandidateSets(puzzle: GraphColouringProblem): GraphColouringProblem = {
     iterate(puzzle) { puzzle => puzzle.reduceByElementCandidateSets() }
   }
 
-  def iterateReduceByOnlyPossibleZonePlacings(puzzle: GraphColouringProblem): GraphColouringProblem = {
+  private def iterateReduceByOnlyPossibleZonePlacings(puzzle: GraphColouringProblem): GraphColouringProblem = {
     iterate(puzzle) { puzzle => puzzle.reduceByOnlyPossiblePlacings(includeRows = false, includeColumns = false, includeZones = true) }
   }
 
-  def iterateReduceByOnlyPossiblePlacings(puzzle: GraphColouringProblem): GraphColouringProblem = {
+  private def iterateReduceByOnlyPossiblePlacings(puzzle: GraphColouringProblem): GraphColouringProblem = {
     iterate(puzzle) { puzzle => puzzle.reduceByOnlyPossiblePlacings() }
   }
 
-  def iterateReduceByTwoElementCoverings(puzzle: GraphColouringProblem): GraphColouringProblem = {
+  private def iterateReduceByTwoElementCoverings(puzzle: GraphColouringProblem): GraphColouringProblem = {
     iterate(puzzle) { puzzle => puzzle.reduceByTwoElementCoverings() }
   }
 
-  def solveByIterateReduceByElementCandidateSets(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  private def iterateReduceByThreeElementCoverings(puzzle: GraphColouringProblem): GraphColouringProblem = {
+    iterate(puzzle) { puzzle => puzzle.reduceByThreeElementCoverings() }
+  }
+
+  private def solveByIterateReduceByElementCandidateSets(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     Some(iterateReduceByElementCandidateSets(puzzle)) filter { _.valid }
   }
 
-  def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     val solution = iterate(puzzle) {
       (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossiblePlacings
     }
@@ -30,7 +34,7 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  def solveByIterateReduceByElementCandidateSetsAndOnlyPossibleZonePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossibleZonePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     val solution = iterate(puzzle) {
       (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossibleZonePlacings
     }
@@ -38,7 +42,7 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoElementCoverings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoElementCoverings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     val solution = iterate(puzzle) {
       (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossiblePlacings andThen iterateReduceByTwoElementCoverings
     }
@@ -46,16 +50,36 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  def solve(board: Board): Option[Board] = {
-    val puzzle = GraphColouringProblem(board)
+  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoAndThreeElementCoverings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+    val solution = iterate(puzzle) {
+      (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossiblePlacings andThen iterateReduceByTwoElementCoverings andThen iterateReduceByThreeElementCoverings
+    }
 
-    //    val solution = solveByIterateReduceByElementCandidateSets(puzzle)
-    //    val solution = solveByIterateReduceByElementCandidateSetsAndOnlyPossibleZonePlacings(puzzle)
-    val solution = solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacings(puzzle)
-    //    val solution = solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoElementCoverings(puzzle)
-
-    solution map { _.toBoard }
+    Some(solution) filter { _.valid }
   }
+
+  private def solveByReduceBySearch(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
+    puzzle.reduceBySearch() filter { _.valid }
+  }
+
+  private def solutions(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
+    val reduction = solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoAndThreeElementCoverings(puzzle)
+
+    val search = reduction.toIterator flatMap { reduced: GraphColouringProblem =>
+      reduced.solved match {
+        case true => Iterator(reduced)
+        case false => solveByReduceBySearch(reduced) flatMap { solutions }
+      }
+    }
+
+    search filter { _.solved }
+  }
+
+  def solutions(board: Board): Iterator[Board] = solutions(GraphColouringProblem(board)) map { _.toBoard }
+
+  def solve(board: Board): Option[Board] = (solutions(board) take 1).toList.headOption
+
+  def hasUniqueSolution(board: Board): Boolean = (solutions(board) take 2).length == 1
 
   def isEasy(board: Board): Boolean = {
     board.numValues >= 26

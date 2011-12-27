@@ -28,6 +28,10 @@ case class Row(
 
 }
 
+object Row {
+  val empty = Row(None, None, None, None, None, None, None, None, None)
+}
+
 case class Column(
     first: Option[Z_9],
     second: Option[Z_9],
