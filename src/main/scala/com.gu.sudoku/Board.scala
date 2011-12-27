@@ -1,13 +1,16 @@
 package com.gu.sudoku
 
-sealed abstract class Z_9IndexedBlock {
+sealed abstract class LatinBlock {
   protected val _values: List[Option[Z_9]]
-  def apply(i: Z_9): Option[Z_9] = _values.rotate(8)(i.representative % 9)
+  def apply(i: Z_9): Option[Z_9] = _values(i.representative - 1)
 
-  private lazy val _valuesList: List[Z_9] = _values flatMap { _.toList }
-  lazy val values: Set[Z_9] = _valuesList.toSet
-  lazy val valid: Boolean = _valuesList.distinct == _valuesList
-  lazy val solved: Boolean = valid && values.size == 9
+  lazy val values: Set[Z_9] = (_values flatMap { _.toList }).toSet
+
+  lazy val numValues: Int = _values count { _.isDefined }
+  lazy val numDistinctValues: Int = values.size
+
+  lazy val valid: Boolean = numValues == numDistinctValues
+  lazy val solved: Boolean = numDistinctValues == 9
 }
 
 case class Row(
@@ -19,7 +22,7 @@ case class Row(
     sixth: Option[Z_9],
     seventh: Option[Z_9],
     eighth: Option[Z_9],
-    ninth: Option[Z_9]) extends Z_9IndexedBlock {
+    ninth: Option[Z_9]) extends LatinBlock {
 
   protected val _values: List[Option[Z_9]] = List(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth)
 
@@ -34,7 +37,7 @@ case class Column(
     sixth: Option[Z_9],
     seventh: Option[Z_9],
     eighth: Option[Z_9],
-    ninth: Option[Z_9]) extends Z_9IndexedBlock {
+    ninth: Option[Z_9]) extends LatinBlock {
 
   protected val _values: List[Option[Z_9]] = List(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth)
 
@@ -49,7 +52,7 @@ case class Zone(
     centreRight: Option[Z_9],
     lowerLeft: Option[Z_9],
     lowerCentre: Option[Z_9],
-    lowerRight: Option[Z_9]) extends Z_9IndexedBlock {
+    lowerRight: Option[Z_9]) extends LatinBlock {
 
   protected val _values: List[Option[Z_9]] = List(upperLeft, upperCentre, upperRight, centreLeft, centre, centreRight, lowerLeft, lowerCentre, lowerRight)
 }

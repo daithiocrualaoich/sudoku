@@ -11,11 +11,11 @@ case class Graph[T, S](
     nodes: Set[Node[T, S]] = Set.empty[Node[T, S]],
     edges: Set[Edge[T, S]] = Set.empty[Edge[T, S]]) {
 
-  def neighbours(node: Node[T, S]): Set[Node[T, S]] = (edges filter { _ incidentOn node } flatMap { _.nodes }) -- Set(node)
+  def neighbours(node: Node[T, S]): Set[Node[T, S]] = (edges filter { _ incidentOn node } flatMap { _.nodes }) - node
 
   def addNode(label: T, value: S): Graph[T, S] = Graph(nodes + Node(label, value), edges)
   def getNode(label: T): Option[Node[T, S]] = nodes find { _.label == label }
-  def updateNode(label: T, value: S): Graph[T, S] = getNode(label) match {
+  def updateNodeValue(label: T, value: S): Graph[T, S] = getNode(label) match {
     case Some(oldNode) =>
       // Graph needs a bit of surgery in this case
       val newNode = Node(label, value)
