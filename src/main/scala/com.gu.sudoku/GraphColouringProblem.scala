@@ -21,7 +21,10 @@ case class GraphColouringProblem(graph: SudokuGraph) {
     GraphColouringProblem(g)
   }
 
-  def reduceByOnlyPossiblePlacings(): GraphColouringProblem = {
+  def reduceByOnlyPossiblePlacings(
+    includeRows: Boolean = true,
+    includeColumns: Boolean = true,
+    includeZones: Boolean = true): GraphColouringProblem = {
     // For each exclusion area, place elements that have only one possible placing
     def reduceBy(puzzle: SudokuGraph, nodes: List[SudokuGraphNode]): SudokuGraph = {
       var g = puzzle
@@ -60,31 +63,37 @@ case class GraphColouringProblem(graph: SudokuGraph) {
     var g = graph
 
     // Reduce by rows
-    for (row <- Z_9.all) {
-      val nodes: List[SudokuGraphNode] = Z_9.all map { col => g.getNode(col, row).get }
-      g = reduceBy(g, nodes)
+    if (includeRows) {
+      for (row <- Z_9.all) {
+        val nodes: List[SudokuGraphNode] = Z_9.all map { col => g.getNode(col, row).get }
+        g = reduceBy(g, nodes)
+      }
     }
 
     // Reduce by columns
-    for (col <- Z_9.all) {
-      val nodes: List[SudokuGraphNode] = Z_9.all map { row => g.getNode(col, row).get }
-      g = reduceBy(g, nodes)
+    if (includeColumns) {
+      for (col <- Z_9.all) {
+        val nodes: List[SudokuGraphNode] = Z_9.all map { row => g.getNode(col, row).get }
+        g = reduceBy(g, nodes)
+      }
     }
 
     // Reduce by zones
-    for (band <- (0 to 2)) {
-      for (indexWithinBand <- (0 to 2)) {
-        val zoneUpperLeftCol = band * 3 + 1
-        val zoneUpperLeftRow = indexWithinBand * 3 + 1
+    if (includeZones) {
+      for (band <- (0 to 2)) {
+        for (indexWithinBand <- (0 to 2)) {
+          val zoneUpperLeftCol = band * 3 + 1
+          val zoneUpperLeftRow = indexWithinBand * 3 + 1
 
-        val indices = (0 to 2) flatMap { row =>
-          (0 to 2) map { col =>
-            (Z_9.fromInt(zoneUpperLeftCol + col), Z_9.fromInt(zoneUpperLeftRow + row))
+          val indices = (0 to 2) flatMap { row =>
+            (0 to 2) map { col =>
+              (Z_9.fromInt(zoneUpperLeftCol + col), Z_9.fromInt(zoneUpperLeftRow + row))
+            }
           }
-        }
 
-        val nodes: List[SudokuGraphNode] = indices.toList map { case (col, row) => g.getNode(col, row).get }
-        g = reduceBy(g, nodes)
+          val nodes: List[SudokuGraphNode] = indices.toList map { case (col, row) => g.getNode(col, row).get }
+          g = reduceBy(g, nodes)
+        }
       }
     }
 
@@ -121,6 +130,7 @@ case class GraphColouringProblem(graph: SudokuGraph) {
   }
 
   lazy val valid = toBoard.valid
+  lazy val solved = toBoard.solved
 
   lazy val toBoard: Board = {
     def boardValue(i: Z_9, j: Z_9) = {

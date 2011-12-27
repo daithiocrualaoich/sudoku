@@ -92,6 +92,7 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
 
   lazy val valid: Boolean = (rows ++ columns ++ zones) forall { _.valid }
   lazy val solved: Boolean = (rows ++ columns ++ zones) forall { _.solved }
+  lazy val numValues: Int = (rows map { _.numValues }).sum
 
   override def toString = {
     val rowStrings = rows map { row =>
