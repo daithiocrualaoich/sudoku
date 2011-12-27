@@ -96,17 +96,17 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
   override def toString = {
     val rowStrings = rows map { row =>
       List(
-        row.first map { _.representative } getOrElse " ",
-        row.second map { _.representative } getOrElse " ",
-        row.third map { _.representative } getOrElse " ",
+        row.first map { _.representative } getOrElse "_",
+        row.second map { _.representative } getOrElse "_",
+        row.third map { _.representative } getOrElse "_",
         "|",
-        row.fourth map { _.representative } getOrElse " ",
-        row.fifth map { _.representative } getOrElse " ",
-        row.sixth map { _.representative } getOrElse " ",
+        row.fourth map { _.representative } getOrElse "_",
+        row.fifth map { _.representative } getOrElse "_",
+        row.sixth map { _.representative } getOrElse "_",
         "|",
-        row.seventh map { _.representative } getOrElse " ",
-        row.eighth map { _.representative } getOrElse " ",
-        row.ninth map { _.representative } getOrElse " "
+        row.seventh map { _.representative } getOrElse "_",
+        row.eighth map { _.representative } getOrElse "_",
+        row.ninth map { _.representative } getOrElse "_"
       ).mkString(" ", " ", " ")
     }
 
@@ -124,6 +124,34 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
       rowStrings(8)
     )
 
-    allRows.mkString("\n", "\n", "\n")
+    allRows.mkString("", "\n", "\n")
+  }
+}
+
+object Board {
+
+  private val Line = """(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)""".r
+  private def toElement(token: String): Option[Z_9] = token.toIntOption map { Z_9.fromInt }
+
+  def apply(board: String): Board = {
+    val lines = board.split("\n").toList
+    val trimmed = lines map { _.replaceAll("[^0-9_]", "") } filter { _ != "" }
+
+    val rows = trimmed map { line =>
+      val Line(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth) = line
+      Row(
+        toElement(first),
+        toElement(second),
+        toElement(third),
+        toElement(fourth),
+        toElement(fifth),
+        toElement(sixth),
+        toElement(seventh),
+        toElement(eighth),
+        toElement(ninth)
+      )
+    }
+
+    Board(rows(0), rows(1), rows(2), rows(3), rows(4), rows(5), rows(6), rows(7), rows(8))
   }
 }

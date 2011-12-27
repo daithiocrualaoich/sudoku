@@ -10,6 +10,14 @@ object `package` {
     def rotate(i: Int): List[A] = (l drop i) ++ (l take i)
   }
 
+  implicit def string2IntOption(s: String) = new {
+    lazy val toIntOption: Option[Int] = try {
+      Some(s.toInt)
+    } catch {
+      case _ => None
+    }
+  }
+
   def iterate[T](t: T)(iteration: T => T): T = {
     var previous = t
     var current = iteration(previous)

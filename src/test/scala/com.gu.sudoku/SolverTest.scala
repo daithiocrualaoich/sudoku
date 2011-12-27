@@ -115,4 +115,34 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
     solution.get should be(sudoku2064hard_solution)
   }
 
+  it should "solve sudoku2065hard" in {
+    val solution = Solver.solve(sudoku2065hard)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(sudoku2065hard_solution)
+  }
+
+  it should "solve sudoku2066easy" in {
+    val solution = Solver.solve(sudoku2066easy)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(sudoku2066easy_solution)
+  }
+
+  it should "solve sudoku2067medium" in {
+    val solution = Solver.solve(sudoku2067medium)
+
+    solution should be('defined)
+    solution.get.valid should be(true)
+    solution.get.solved should be(true)
+
+    solution.get should be(sudoku2067medium_solution)
+  }
+
 }
