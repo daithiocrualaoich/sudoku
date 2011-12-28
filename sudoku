@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./sbt011 assembly && java -jar target/sudoku.jar "$@"

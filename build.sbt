@@ -1,3 +1,5 @@
+import AssemblyKeys._
+
 organization := "com.gu"
 
 name := "sudoku"
@@ -5,6 +7,17 @@ name := "sudoku"
 version := "1-SNAPSHOT"
 
 scalaVersion := "2.9.1"
+
+
+
+
+// Target Settings
+
+seq(sbtassembly.Plugin.assemblySettings: _*)
+
+jarName in assembly := "sudoku.jar"
+
+
 
 
 

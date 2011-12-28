@@ -22,11 +22,11 @@ object Solver {
     iterate(puzzle) { puzzle => puzzle.reduceByThreeElementCoverings() }
   }
 
-  private def solveByIterateReduceByElementCandidateSets(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  def solveByIterateReduceByElementCandidateSets(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     Some(iterateReduceByElementCandidateSets(puzzle)) filter { _.valid }
   }
 
-  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     val solution = iterate(puzzle) {
       (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossiblePlacings
     }
@@ -34,7 +34,7 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossibleZonePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  def solveByIterateReduceByElementCandidateSetsAndOnlyPossibleZonePlacings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     val solution = iterate(puzzle) {
       (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossibleZonePlacings
     }
@@ -42,7 +42,7 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoElementCoverings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoElementCoverings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     val solution = iterate(puzzle) {
       (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossiblePlacings andThen iterateReduceByTwoElementCoverings
     }
@@ -50,7 +50,7 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  private def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoAndThreeElementCoverings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
+  def solveByIterateReduceByElementCandidateSetsAndOnlyPossiblePlacingsAndTwoAndThreeElementCoverings(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     val solution = iterate(puzzle) {
       (iterateReduceByElementCandidateSets _) andThen iterateReduceByOnlyPossiblePlacings andThen iterateReduceByTwoElementCoverings andThen iterateReduceByThreeElementCoverings
     }
@@ -58,7 +58,7 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  private def solveByReduceBySearch(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
+  def solveByReduceBySearch(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
     puzzle.reduceBySearch() filter { _.valid }
   }
 
@@ -81,14 +81,22 @@ object Solver {
 
   def hasUniqueSolution(board: Board): Boolean = (solutions(board) take 2).length == 1
 
-  def isEasy(board: Board): Boolean = {
-    board.numValues >= 26
+  def difficulty(board: Board) = {
+    // Difficulty is how much is left after five rounds of candidate reduction and zone only possible placings.
+    var puzzle = GraphColouringProblem(board)
+
+    (1 to 5).toList foreach { _ =>
+      puzzle = puzzle.reduceByElementCandidateSets().reduceByOnlyPossiblePlacings(includeRows = false, includeColumns = false)
+    }
+
+    81 - puzzle.toBoard.numValues
   }
 
+  def isEasy(board: Board): Boolean = difficulty(board) < 19 && isPermitted(board)
+
   def isMedium(board: Board): Boolean = {
-    !isEasy(board) && (
-      solveByIterateReduceByElementCandidateSetsAndOnlyPossibleZonePlacings(GraphColouringProblem(board)) exists { _.solved }
-    )
+    val diff = difficulty(board)
+    19 <= diff && diff < 39 && isPermitted(board)
   }
 
   def isHard(board: Board): Boolean = !isEasy(board) && !isMedium(board) && isPermitted(board)

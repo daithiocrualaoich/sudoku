@@ -183,20 +183,13 @@ case class GraphColouringProblem(graph: SudokuGraph) {
     candidateNodes match {
       case Nil => Iterator(this)
       case _ =>
-        println("Reducing by search")
         val nodesWithSmallestCandidateSetSize = (candidateNodes sortBy { case (size, _) => size }).head._2
 
         val nodesWithNeighboursCandidateSetSum = nodesWithSmallestCandidateSetSize map { node =>
           ((graph.neighbours(node).toList map { _.value.size }).sum, node)
         }
 
-        val node = (nodesWithNeighboursCandidateSetSum sortBy { case (size, _) => -size }).head._2
-
-        println("Assigned values: " + toBoard.numValues)
-        println("Reducing node: " + node.label)
-        println("Reducing values: " + node.value)
-        println()
-        println()
+        val node = (nodesWithNeighboursCandidateSetSum sortBy { case (size, _) => size }).head._2
 
         node.value.toIterator map { value => GraphColouringProblem(graph.updateNodeValue(node.label, Set(value))) }
     }
