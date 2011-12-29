@@ -28,6 +28,11 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
+  "batik" % "batik-svg-dom" % "1.6-1",
+  "batik" % "batik-svggen" % "1.6-1",
+  "batik" % "batik-rasterizer" % "1.6-1",
+  "batik" % "batik-extension" % "1.6-1",
+  "crimson" % "crimson" % "1.1.3",
   "org.slf4j" % "slf4j-api" % "1.6.4",
   "org.slf4j" % "slf4j-jdk14" % "1.6.4"
 )

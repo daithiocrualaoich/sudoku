@@ -1,0 +1,11 @@
+#!/bin/bash
+
+./sbt011 assembly
+
+I=1
+while(true) do
+  echo "Generating page $I..." 
+  java -jar target/sudoku.jar "out/$I"
+  
+  I=`expr $I + 1`
+done
