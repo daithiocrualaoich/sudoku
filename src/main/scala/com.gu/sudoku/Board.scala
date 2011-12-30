@@ -91,7 +91,7 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
     val band = (j.representative - 1) / 3
     val indexWithinBand = (i.representative - 1) / 3
 
-    zone(Z_9.fromInt(band * 3 + indexWithinBand + 1))
+    zone(Z_9(band * 3 + indexWithinBand + 1))
   }
 
   lazy val valid: Boolean = (rows ++ columns ++ zones) forall { _.valid }
@@ -136,7 +136,9 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
 object Board {
 
   private val Line = """(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)""".r
-  private def toElement(token: String): Option[Z_9] = token.toIntOption map { Z_9.fromInt }
+  private def toElement(token: String): Option[Z_9] = token.toIntOption map { Z_9(_) }
+
+  // TODO: def apply(graph: GraphColouringProblem): Board
 
   def apply(board: String): Board = {
     val lines = board.split("\n").toList

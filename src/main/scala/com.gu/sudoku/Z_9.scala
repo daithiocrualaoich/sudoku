@@ -1,15 +1,14 @@
 package com.gu.sudoku
 
 sealed abstract class Z_9(val representative: Int) {
-  def >(that: Z_9): Boolean = representative > that.representative
-  override def toString(): String = "[" + representative.toString + "]"
+  override def toString(): String = "[%d]" format representative
 }
 
 object Z_9 {
+  implicit val ordering: Ordering[Z_9] = Ordering[Int] on { _.representative }
   val all = List(One, Two, Three, Four, Five, Six, Seven, Eight, Nine)
 
-  def apply(i: Int): Z_9 = fromInt(i)
-  def fromInt(i: Int): Z_9 = all.rotate(8)(i % 9)
+  def apply(i: Int): Z_9 = all.rotate(8)(i % 9)
 }
 
 object One extends Z_9(1)

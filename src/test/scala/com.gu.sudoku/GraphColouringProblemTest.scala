@@ -23,48 +23,36 @@ class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBo
     graph(One, One) should be(Set(Six))
     graph(Two, One) should be(Set(Nine))
     graph(Three, One) should be(Set(Eight))
-    graph(Four, One) should be(Set(One, Two, Three, Four, Seven))
-    graph(Five, One) should be(Set(One, Two, Three, Four, Seven))
-    graph(Six, One) should be(Set(One, Two, Three))
-    graph(Seven, One) should be(Set(One, Three, Four))
-    graph(Eight, One) should be(Set(One, Four, Five, Seven))
-    graph(Nine, One) should be(Set(Three, Four, Five, Seven))
+    graph(Four, One) should be(Z_9.all.toSet)
+    graph(Five, One) should be(Z_9.all.toSet)
+    graph(Six, One) should be(Z_9.all.toSet)
+    graph(Seven, One) should be(Z_9.all.toSet)
+    graph(Eight, One) should be(Z_9.all.toSet)
+    graph(Nine, One) should be(Z_9.all.toSet)
 
     graph(One, Two) should be(Set(Four))
-    graph(Two, Two) should be(Set(One, Seven))
-    graph(Three, Two) should be(Set(Seven))
+    graph(Two, Two) should be(Z_9.all.toSet)
+    graph(Three, Two) should be(Z_9.all.toSet)
     graph(Four, Two) should be(Set(Five))
-    graph(Five, Two) should be(Set(One, Three, Seven, Eight, Nine))
-    graph(Six, Two) should be(Set(One, Three, Eight, Nine))
-    graph(Seven, Two) should be(Set(One, Three, Six, Eight, Nine))
+    graph(Five, Two) should be(Z_9.all.toSet)
+    graph(Six, Two) should be(Z_9.all.toSet)
+    graph(Seven, Two) should be(Z_9.all.toSet)
     graph(Eight, Two) should be(Set(Two))
-    graph(Nine, Two) should be(Set(Three, Seven, Eight))
+    graph(Nine, Two) should be(Z_9.all.toSet)
 
     graph(One, Three) should be(Set(Three))
-    graph(Two, Three) should be(Set(One, Two, Five, Seven))
-    graph(Three, Three) should be(Set(Two, Five, Seven))
+    graph(Two, Three) should be(Z_9.all.toSet)
+    graph(Three, Three) should be(Z_9.all.toSet)
     graph(Four, Three) should be(Set(Six))
-    graph(Five, Three) should be(Set(One, Two, Four, Seven, Eight, Nine))
-    graph(Six, Three) should be(Set(One, Two, Eight, Nine))
-    graph(Seven, Three) should be(Set(One, Four, Eight, Nine))
-    graph(Eight, Three) should be(Set(One, Four, Five, Seven, Eight))
-    graph(Nine, Three) should be(Set(Four, Five, Seven, Eight))
+    graph(Five, Three) should be(Z_9.all.toSet)
+    graph(Six, Three) should be(Z_9.all.toSet)
+    graph(Seven, Three) should be(Z_9.all.toSet)
+    graph(Eight, Three) should be(Z_9.all.toSet)
+    graph(Nine, Three) should be(Z_9.all.toSet)
 
     // TODO: Finish...
 
-    graph.toBoard should be(
-      Board(
-        sudoku2059hard.first,
-        Row(Some(Four), None, Some(Seven), Some(Five), None, None, None, Some(Two), None),
-        sudoku2059hard.third,
-        sudoku2059hard.fourth,
-        sudoku2059hard.fifth,
-        sudoku2059hard.sixth,
-        sudoku2059hard.seventh,
-        sudoku2059hard.eighth,
-        sudoku2059hard.ninth
-      )
-    )
+    graph.toBoard should be(sudoku2059hard)
   }
 
 }
