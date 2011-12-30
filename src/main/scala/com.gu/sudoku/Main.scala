@@ -12,15 +12,21 @@ import scala.util.Random
 
 object Main extends App {
 
+  println("Generating first easy puzzle.")
   val targetNumValues1 = 26 + Random.nextInt(7)
   val easy1 = (Generator.generatePuzzleBoards() filter { _.numValues <= targetNumValues1 } filter { Difficulty.isEasy }).head
+  println("Generating second easy puzzle.")
   val targetNumValues2 = 26 + Random.nextInt(7)
   val easy2 = (Generator.generatePuzzleBoards() filter { _.numValues <= targetNumValues2 } filter { Difficulty.isEasy }).head
 
+  println("Generating first medium puzzle.")
   val medium3 = (Generator.generatePuzzleBoards() filter { Difficulty.isMedium }).head
+  println("Generating second medium puzzle.")
   val medium4 = (Generator.generatePuzzleBoards() filter { Difficulty.isMedium }).head
 
+  println("Generating first hard puzzle.")
   val hard5 = (Generator.generatePuzzleBoards() filter { Difficulty.isHard }).head
+  println("Generating second hard puzzle.")
   val hard6 = (Generator.generatePuzzleBoards() filter { Difficulty.isHard }).head
 
   val graphics = {
@@ -31,11 +37,12 @@ object Main extends App {
   }
 
   def print(board: Board) {
-    val difficulty = {
-      if (Difficulty.isEasy(board)) "Easy"
-      else if (Difficulty.isMedium(board)) "Medium"
-      else if (Difficulty.isHard(board)) "Hard"
-      else ""
+    // TODO: Move to Board
+    val difficulty = board match {
+      case Easy() => "Easy"
+      case Medium() => "Medium"
+      case Hard() => "Hard"
+      case _ => ""
     }
 
     graphics.setPaint(Color.lightGray)

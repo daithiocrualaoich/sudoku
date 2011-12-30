@@ -4,6 +4,8 @@ import scala.util.Random
 
 object Generator {
 
+  // TODO: Change to use GraphColouringProblem instead of Board
+
   private def generateColouring(graph: GraphColouringProblem): Option[GraphColouringProblem] = {
     graph.solved match {
       case true => Some(graph)
@@ -21,9 +23,13 @@ object Generator {
           case Some(colouring) => colouring
         }
 
-        colourings.take(1).toList.headOption
+        (colourings take 1).toList.headOption
     }
   }
+
+  //  def generateEasyPuzzle(maxInitialPlacings: Int = 26): Option[Board] = {}
+  //  def generateMediumPuzzle(): Option[Board] = {}
+  //  def generateHardPuzzle(): Option[Board] = {}
 
   def generateSolvedBoard(): Board = generateColouring(GraphColouringProblem.unconstrained).get.toBoard
 

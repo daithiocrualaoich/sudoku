@@ -353,7 +353,9 @@ trait GraphColouringProblem { self =>
   }
 
   def reduceBySearch(): Iterator[GraphColouringProblem] = {
-    // Pick the node with smallest candidate set size > 1 and most constrained neighbours and try alternatives
+    // Pick the node with smallest candidate set size > 1 and 
+    // most constrained neighbours and try alternatives
+
     val nodes: Map[Int, List[SudokuGraphNode]] = graph.nodes.toList groupBy { _.value.size }
 
     val candidateNodes = nodes.toList filter { case (size, _) => size > 1 }

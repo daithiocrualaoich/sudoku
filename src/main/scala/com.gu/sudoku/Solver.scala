@@ -65,6 +65,8 @@ object Solver {
     search filter { _.solved }
   }
 
+  // TODO: Change to use GraphColouringProblem instead of Board
+
   def solutions(board: Board): Iterator[Board] = solutions(GraphColouringProblem(board)) map { _.toBoard }
   def hasUniqueSolution(board: Board): Boolean = (solutions(board) take 2).length == 1
 
