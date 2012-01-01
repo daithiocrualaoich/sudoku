@@ -14,15 +14,9 @@ sealed abstract class LatinBlock {
 }
 
 case class Row(
-    first: Option[Z_9],
-    second: Option[Z_9],
-    third: Option[Z_9],
-    fourth: Option[Z_9],
-    fifth: Option[Z_9],
-    sixth: Option[Z_9],
-    seventh: Option[Z_9],
-    eighth: Option[Z_9],
-    ninth: Option[Z_9]) extends LatinBlock {
+    first: Option[Z_9], second: Option[Z_9], third: Option[Z_9],
+    fourth: Option[Z_9], fifth: Option[Z_9], sixth: Option[Z_9],
+    seventh: Option[Z_9], eighth: Option[Z_9], ninth: Option[Z_9]) extends LatinBlock {
 
   protected val _values: List[Option[Z_9]] = List(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth)
 
@@ -33,30 +27,18 @@ object Row {
 }
 
 case class Column(
-    first: Option[Z_9],
-    second: Option[Z_9],
-    third: Option[Z_9],
-    fourth: Option[Z_9],
-    fifth: Option[Z_9],
-    sixth: Option[Z_9],
-    seventh: Option[Z_9],
-    eighth: Option[Z_9],
-    ninth: Option[Z_9]) extends LatinBlock {
+    first: Option[Z_9], second: Option[Z_9], third: Option[Z_9],
+    fourth: Option[Z_9], fifth: Option[Z_9], sixth: Option[Z_9],
+    seventh: Option[Z_9], eighth: Option[Z_9], ninth: Option[Z_9]) extends LatinBlock {
 
   protected val _values: List[Option[Z_9]] = List(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth)
 
 }
 
 case class Zone(
-    upperLeft: Option[Z_9],
-    upperCentre: Option[Z_9],
-    upperRight: Option[Z_9],
-    centreLeft: Option[Z_9],
-    centre: Option[Z_9],
-    centreRight: Option[Z_9],
-    lowerLeft: Option[Z_9],
-    lowerCentre: Option[Z_9],
-    lowerRight: Option[Z_9]) extends LatinBlock {
+    upperLeft: Option[Z_9], upperCentre: Option[Z_9], upperRight: Option[Z_9],
+    centreLeft: Option[Z_9], centre: Option[Z_9], centreRight: Option[Z_9],
+    lowerLeft: Option[Z_9], lowerCentre: Option[Z_9], lowerRight: Option[Z_9]) extends LatinBlock {
 
   protected val _values: List[Option[Z_9]] = List(upperLeft, upperCentre, upperRight, centreLeft, centre, centreRight, lowerLeft, lowerCentre, lowerRight)
 }
@@ -67,19 +49,55 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
   private lazy val columns = Z_9.all map { i => new Column(first(i), second(i), third(i), fourth(i), fifth(i), sixth(i), seventh(i), eighth(i), ninth(i)) }
   private lazy val zones = List(
     // Band 1
-    new Zone(first(One), first(Two), first(Three), second(One), second(Two), second(Three), third(One), third(Two), third(Three)),
-    new Zone(first(Four), first(Five), first(Six), second(Four), second(Five), second(Six), third(Four), third(Five), third(Six)),
-    new Zone(first(Seven), first(Eight), first(Nine), second(Seven), second(Eight), second(Nine), third(Seven), third(Eight), third(Nine)),
+    new Zone(
+      first(One), first(Two), first(Three),
+      second(One), second(Two), second(Three),
+      third(One), third(Two), third(Three)
+    ),
+    new Zone(
+      first(Four), first(Five), first(Six),
+      second(Four), second(Five), second(Six),
+      third(Four), third(Five), third(Six)
+    ),
+    new Zone(
+      first(Seven), first(Eight), first(Nine),
+      second(Seven), second(Eight), second(Nine),
+      third(Seven), third(Eight), third(Nine)
+    ),
 
     // Band 2
-    new Zone(fourth(One), fourth(Two), fourth(Three), fifth(One), fifth(Two), fifth(Three), sixth(One), sixth(Two), sixth(Three)),
-    new Zone(fourth(Four), fourth(Five), fourth(Six), fifth(Four), fifth(Five), fifth(Six), sixth(Four), sixth(Five), sixth(Six)),
-    new Zone(fourth(Seven), fourth(Eight), fourth(Nine), fifth(Seven), fifth(Eight), fifth(Nine), sixth(Seven), sixth(Eight), sixth(Nine)),
+    new Zone(
+      fourth(One), fourth(Two), fourth(Three),
+      fifth(One), fifth(Two), fifth(Three),
+      sixth(One), sixth(Two), sixth(Three)
+    ),
+    new Zone(
+      fourth(Four), fourth(Five), fourth(Six),
+      fifth(Four), fifth(Five), fifth(Six),
+      sixth(Four), sixth(Five), sixth(Six)
+    ),
+    new Zone(
+      fourth(Seven), fourth(Eight), fourth(Nine),
+      fifth(Seven), fifth(Eight), fifth(Nine),
+      sixth(Seven), sixth(Eight), sixth(Nine)
+    ),
 
     // Band 3
-    new Zone(seventh(One), seventh(Two), seventh(Three), eighth(One), eighth(Two), eighth(Three), ninth(One), ninth(Two), ninth(Three)),
-    new Zone(seventh(Four), seventh(Five), seventh(Six), eighth(Four), eighth(Five), eighth(Six), ninth(Four), ninth(Five), ninth(Six)),
-    new Zone(seventh(Seven), seventh(Eight), seventh(Nine), eighth(Seven), eighth(Eight), eighth(Nine), ninth(Seven), ninth(Eight), ninth(Nine))
+    new Zone(
+      seventh(One), seventh(Two), seventh(Three),
+      eighth(One), eighth(Two), eighth(Three),
+      ninth(One), ninth(Two), ninth(Three)
+    ),
+    new Zone(
+      seventh(Four), seventh(Five), seventh(Six),
+      eighth(Four), eighth(Five), eighth(Six),
+      ninth(Four), ninth(Five), ninth(Six)
+    ),
+    new Zone(
+      seventh(Seven), seventh(Eight), seventh(Nine),
+      eighth(Seven), eighth(Eight), eighth(Nine),
+      ninth(Seven), ninth(Eight), ninth(Nine)
+    )
   )
 
   def apply(i: Z_9, j: Z_9): Option[Z_9] = column(i)(j)
@@ -96,7 +114,8 @@ case class Board(first: Row, second: Row, third: Row, fourth: Row, fifth: Row, s
 
   lazy val valid: Boolean = (rows ++ columns ++ zones) forall { _.valid }
   lazy val solved: Boolean = (rows ++ columns ++ zones) forall { _.solved }
-  lazy val numValues: Int = (rows map { _.numValues }).sum
+
+  lazy val toGraphColouringProblem: GraphColouringProblem = GraphColouringProblem(this)
 
   override def toString = {
     val rowStrings = rows map { row =>
@@ -138,8 +157,6 @@ object Board {
   private val Line = """(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)(\d|_)""".r
   private def toElement(token: String): Option[Z_9] = token.toIntOption map { Z_9(_) }
 
-  // TODO: def apply(graph: GraphColouringProblem): Board
-
   def apply(board: String): Board = {
     val lines = board.split("\n").toList
     val trimmed = lines map { _.replaceAll("[^0-9_]", "") } filter { _ != "" }
@@ -147,18 +164,32 @@ object Board {
     val rows = trimmed map { line =>
       val Line(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth) = line
       Row(
-        toElement(first),
-        toElement(second),
-        toElement(third),
-        toElement(fourth),
-        toElement(fifth),
-        toElement(sixth),
-        toElement(seventh),
-        toElement(eighth),
-        toElement(ninth)
+        toElement(first), toElement(second), toElement(third),
+        toElement(fourth), toElement(fifth), toElement(sixth),
+        toElement(seventh), toElement(eighth), toElement(ninth)
       )
     }
 
     Board(rows(0), rows(1), rows(2), rows(3), rows(4), rows(5), rows(6), rows(7), rows(8))
   }
+
+  def apply(graphColouringProblem: GraphColouringProblem): Board = {
+    def boardValue(i: Z_9, j: Z_9) = SingletonSet.unapply(graphColouringProblem(i, j).candidates)
+
+    val rows = (Z_9.all map { j =>
+      (j, Row(
+        boardValue(One, j), boardValue(Two, j), boardValue(Three, j),
+        boardValue(Four, j), boardValue(Five, j), boardValue(Six, j),
+        boardValue(Seven, j), boardValue(Eight, j), boardValue(Nine, j)
+      )
+      )
+    }).toMap
+
+    Board(
+      rows(One), rows(Two), rows(Three),
+      rows(Four), rows(Five), rows(Six),
+      rows(Seven), rows(Eight), rows(Nine)
+    )
+  }
+
 }

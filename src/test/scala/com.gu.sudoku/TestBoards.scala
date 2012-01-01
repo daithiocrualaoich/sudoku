@@ -2,7 +2,7 @@ package com.gu.sudoku
 
 trait TestBoards {
 
-  val sudoku2054easy = {
+  lazy val sudoku2054easy = {
     Board("""
        _ 2 7 | 5 _ _ | _ _ _
        4 _ _ | 6 _ 1 | 2 3 _
@@ -15,10 +15,10 @@ trait TestBoards {
        _ 4 _ | _ _ _ | _ _ 8
        _ 5 3 | 8 _ 9 | _ _ 2
        _ _ _ | _ _ 7 | 6 4 _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2054easy_solution = {
+  lazy val sudoku2054easy_solution = {
     Board("""
        3 2 7 | 5 9 4 | 8 6 1 
        4 9 5 | 6 8 1 | 2 3 7 
@@ -31,10 +31,10 @@ trait TestBoards {
        7 4 9 | 1 2 6 | 3 5 8 
        6 5 3 | 8 4 9 | 1 7 2 
        1 8 2 | 3 5 7 | 6 4 9 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2055medium = {
+  lazy val sudoku2055medium = {
     Board("""
        _ _ _ | _ _ 8 | 9 _ _
        _ _ 5 | 9 _ _ | _ 8 _
@@ -47,10 +47,10 @@ trait TestBoards {
        _ 4 _ | _ 8 _ | _ 5 _
        _ 5 _ | _ _ 2 | 7 _ _
        _ _ 9 | 6 _ _ | _ _ _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2055medium_solution = {
+  lazy val sudoku2055medium_solution = {
     Board("""    
        4 6 7 | 2 5 8 | 9 1 3 
        1 2 5 | 9 7 3 | 6 8 4 
@@ -63,10 +63,10 @@ trait TestBoards {
        6 4 2 | 3 8 7 | 1 5 9 
        3 5 1 | 4 9 2 | 7 6 8 
        8 7 9 | 6 1 5 | 4 3 2 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2056medium = {
+  lazy val sudoku2056medium = {
     Board("""
        _ 2 7 | _ _ _ | _ 6 _
        9 _ _ | _ _ _ | _ _ 5
@@ -79,10 +79,10 @@ trait TestBoards {
        _ _ _ | 5 4 _ | _ _ 6
        2 _ _ | _ _ _ | _ _ 4
        _ 6 _ | _ _ _ | 3 1 _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2056medium_solution = {
+  lazy val sudoku2056medium_solution = {
     Board("""    
        1 2 7 | 4 8 5 | 9 6 3 
        9 4 8 | 6 1 3 | 7 2 5 
@@ -95,10 +95,10 @@ trait TestBoards {
        7 8 3 | 5 4 1 | 2 9 6 
        2 1 9 | 7 3 6 | 8 5 4 
        4 6 5 | 8 2 9 | 3 1 7 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2057hard = {
+  lazy val sudoku2057hard = {
     Board("""
        _ _ 9 | _ _ _ | 7 _ _
        _ 5 _ | _ _ _ | _ 2 _
@@ -111,10 +111,10 @@ trait TestBoards {
        4 _ _ | 9 _ 3 | _ _ 1
        _ 3 _ | _ _ _ | _ 6 _
        _ _ 6 | _ _ _ | 8 _ _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2057hard_solution = {
+  lazy val sudoku2057hard_solution = {
     Board("""
        2 8 9 | 5 3 6 | 7 1 4 
        7 5 4 | 8 9 1 | 3 2 6 
@@ -127,10 +127,10 @@ trait TestBoards {
        4 2 8 | 9 6 3 | 5 7 1 
        1 3 5 | 2 7 8 | 4 6 9 
        9 7 6 | 4 1 5 | 8 3 2 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2058hard = {
+  lazy val sudoku2058hard = {
     Board("""
        _ 8 4 | _ _ _ | _ 6 _
        7 _ _ | 5 _ _ | _ _ 8
@@ -143,10 +143,10 @@ trait TestBoards {
        4 _ _ | _ _ 3 | _ _ _
        8 _ _ | _ _ 7 | _ _ 1
        _ 3 _ | _ _ _ | 4 9 _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2058hard_solution = {
+  lazy val sudoku2058hard_solution = {
     Board("""
        3 8 4 | 1 7 2 | 5 6 9 
        7 2 9 | 5 6 4 | 3 1 8 
@@ -159,10 +159,10 @@ trait TestBoards {
        4 1 7 | 6 9 3 | 8 2 5 
        8 9 5 | 2 4 7 | 6 3 1 
        2 3 6 | 8 5 1 | 4 9 7 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2059hard = {
+  lazy val sudoku2059hard = {
     Board("""
        6 9 8 | _ _ _ | _ _ _
        4 _ _ | 5 _ _ | _ 2 _
@@ -175,10 +175,10 @@ trait TestBoards {
        _ _ _ | _ _ 4 | _ _ 2
        _ 3 _ | _ _ 7 | _ _ 6
        _ _ _ | _ _ _ | 5 9 1
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2059hard_solution = {
+  lazy val sudoku2059hard_solution = {
     Board("""
        6 9 8 | 7 2 1 | 4 5 3 
        4 1 7 | 5 9 3 | 6 2 8 
@@ -191,10 +191,10 @@ trait TestBoards {
        8 5 6 | 9 1 4 | 3 7 2 
        1 3 9 | 2 5 7 | 8 4 6 
        7 4 2 | 8 3 6 | 5 9 1 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2060easy = {
+  lazy val sudoku2060easy = {
     Board("""
        _ _ 1 | _ 2 _ | _ 3 _
        _ _ _ | 1 _ _ | 2 _ 7
@@ -207,10 +207,10 @@ trait TestBoards {
        _ 4 _ | 6 _ _ | _ _ 2
        2 _ 8 | _ _ 4 | _ _ _
        _ 5 _ | _ 1 _ | 3 _ _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2060easy_solution = {
+  lazy val sudoku2060easy_solution = {
     Board("""
        4 7 1 | 9 2 5 | 6 3 8 
        3 8 5 | 1 4 6 | 2 9 7 
@@ -223,10 +223,10 @@ trait TestBoards {
        1 4 7 | 6 3 8 | 9 5 2 
        2 3 8 | 5 9 4 | 7 1 6 
        9 5 6 | 7 1 2 | 3 8 4 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2061medium = {
+  lazy val sudoku2061medium = {
     Board("""
        _ _ 5 | 4 _ _ | _ _ _
        _ 7 _ | _ 9 _ | _ 6 _
@@ -239,10 +239,10 @@ trait TestBoards {
        5 _ _ | 1 _ _ | _ _ 8
        _ 8 _ | _ 4 _ | _ 5 _
        _ _ _ | _ _ 9 | 6 _ _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2061medium_solution = {
+  lazy val sudoku2061medium_solution = {
     Board("""
        9 6 5 | 4 3 1 | 8 7 2 
        8 7 1 | 2 9 5 | 3 6 4 
@@ -255,10 +255,10 @@ trait TestBoards {
        5 3 9 | 1 6 7 | 2 4 8 
        7 8 6 | 3 4 2 | 1 5 9 
        4 1 2 | 8 5 9 | 6 3 7 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2062medium = {
+  lazy val sudoku2062medium = {
     Board("""
        1 _ 6 | _ _ 3 | _ _ _
        _ _ _ | 8 _ _ | _ _ 4
@@ -271,10 +271,10 @@ trait TestBoards {
        _ 9 _ | _ 4 _ | _ _ 8
        3 _ _ | _ _ 9 | _ _ _
        _ _ _ | 1 _ _ | 7 _ 6
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2062medium_solution = {
+  lazy val sudoku2062medium_solution = {
     Board("""
        1 4 6 | 5 2 3 | 8 7 9 
        5 3 9 | 8 7 6 | 2 1 4 
@@ -287,10 +287,10 @@ trait TestBoards {
        6 9 1 | 2 4 7 | 5 3 8 
        3 7 8 | 6 5 9 | 4 2 1 
        2 5 4 | 1 3 8 | 7 9 6 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2063hard = {
+  lazy val sudoku2063hard = {
     Board("""
        _ 2 _ | _ 4 _ | _ 5 _
        8 _ _ | _ 7 _ | _ _ 6
@@ -303,10 +303,10 @@ trait TestBoards {
        _ _ _ | 8 _ 7 | _ _ _
        9 _ _ | _ 2 _ | _ _ 5
        _ 5 _ | _ 6 _ | _ 7 _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2063hard_solution = {
+  lazy val sudoku2063hard_solution = {
     Board("""
        1 2 3 | 6 4 8 | 7 5 9 
        8 9 4 | 5 7 2 | 3 1 6 
@@ -319,10 +319,10 @@ trait TestBoards {
        4 3 6 | 8 5 7 | 9 2 1 
        9 8 7 | 1 2 4 | 6 3 5 
        2 5 1 | 9 6 3 | 8 7 4 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2064hard = {
+  lazy val sudoku2064hard = {
     Board("""
        _ _ _ | 4 _ 5 | _ _ 1
        _ 7 _ | _ _ _ | _ 2 _
@@ -335,10 +335,10 @@ trait TestBoards {
        _ _ _ | 6 _ 4 | _ _ _
        _ 5 _ | _ _ _ | _ 4 _
        3 _ _ | 1 _ 9 | _ _ _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2064hard_solution = {
+  lazy val sudoku2064hard_solution = {
     Board("""
        9 6 2 | 4 7 5 | 8 3 1 
        8 7 3 | 9 1 6 | 5 2 4 
@@ -351,10 +351,10 @@ trait TestBoards {
        7 2 9 | 6 8 4 | 3 1 5 
        6 5 1 | 7 3 2 | 9 4 8 
        3 4 8 | 1 5 9 | 2 7 6
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2065hard = {
+  lazy val sudoku2065hard = {
     Board("""
        2 _ _ | _ 9 _ | _ _ 8
        3 _ _ | 1 _ _ | _ _ 4
@@ -367,10 +367,10 @@ trait TestBoards {
        _ 2 _ | _ _ 4 | _ _ _
        5 _ _ | _ _ 2 | _ _ 6
        1 _ _ | _ 5 _ | _ _ 2
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2065hard_solution = {
+  lazy val sudoku2065hard_solution = {
     Board("""
        2 6 5 | 4 9 3 | 1 7 8 
        3 9 8 | 1 7 5 | 2 6 4 
@@ -383,10 +383,10 @@ trait TestBoards {
        8 2 9 | 3 6 4 | 5 1 7 
        5 3 4 | 7 1 2 | 9 8 6 
        1 7 6 | 9 5 8 | 4 3 2 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2066easy = {
+  lazy val sudoku2066easy = {
     Board("""
        _ _ _ | _ _ 5 | 1 _ 6
        _ 1 2 | 3 _ _ | _ _ _
@@ -399,10 +399,10 @@ trait TestBoards {
        7 _ 9 | _ _ 4 | 5 6 _
        _ _ _ | _ _ 7 | 8 9 _
        2 _ 6 | 1 _ _ | _ _ _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2066easy_solution = {
+  lazy val sudoku2066easy_solution = {
     Board("""
        3 9 7 | 8 4 5 | 1 2 6 
        6 1 2 | 3 7 9 | 4 8 5 
@@ -415,10 +415,10 @@ trait TestBoards {
        7 8 9 | 2 3 4 | 5 6 1 
        4 3 1 | 5 6 7 | 8 9 2 
        2 5 6 | 1 9 8 | 3 4 7 
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2067medium = {
+  lazy val sudoku2067medium = {
     Board("""
        _ _ _ | _ _ _ | 3 _ _
        9 _ _ | _ _ 8 | _ 5 _
@@ -431,10 +431,10 @@ trait TestBoards {
        _ _ _ | _ 3 _ | 9 _ _
        _ 5 _ | 2 _ _ | _ _ 6
        _ _ 8 | _ _ _ | _ _ _
-    """)
+    """).toGraphColouringProblem
   }
 
-  val sudoku2067medium_solution = {
+  lazy val sudoku2067medium_solution = {
     Board("""
        7 8 5 | 4 6 2 | 3 9 1 
        9 4 3 | 7 1 8 | 6 5 2 
@@ -447,7 +447,7 @@ trait TestBoards {
        4 2 6 | 1 3 7 | 9 8 5 
        1 5 7 | 2 8 9 | 4 3 6 
        3 9 8 | 6 5 4 | 1 2 7 
-    """)
+    """).toGraphColouringProblem
   }
 
 }

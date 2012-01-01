@@ -1,57 +1,96 @@
 package com.gu.sudoku
 
+import com.gu.sudoku.GraphColouringProblem._
 import scala.util.Random
 
 object Generator {
 
-  // TODO: Change to use GraphColouringProblem instead of Board
+  def generateColouring(graphColouringProblem: GraphColouringProblem = unconstrained): Option[GraphColouringProblem] = {
 
-  private def generateColouring(graph: GraphColouringProblem): Option[GraphColouringProblem] = {
-    graph.solved match {
-      case true => Some(graph)
-      case _ =>
+    Solver(graphColouringProblem) flatMap { reduced =>
+      reduced match {
+        case Solved() => Some(reduced)
+        case _ =>
+          // Pick a search and recur
+          val alternatives = graphColouringProblem.reduceBySearch().shuffled
+
+          // TODO: Peek ahead by breath here and reduce by unsolvable?
+          val colourings = alternatives map { generateColouring } collect {
+            case Some(colouring) => colouring
+          }
+
+          colourings.headOption
+      }
+    }
+  }
+
+  def generateEasyPuzzle(
+    maxInitialPlacings: Int = 26,
+    graphColouringProblem: GraphColouringProblem = generateColouring().get): Option[GraphColouringProblem] = {
+
+    graphColouringProblem match {
+      case Easy() =>
+        if (graphColouringProblem.numPlacings <= maxInitialPlacings) {
+          Some(graphColouringProblem)
+        }
+
         // Pick a search and recur
-        val choices = graph.reduceBySearch().toList.shuffled.toIterator
+        val alternatives = graphColouringProblem.expandBySearch().shuffled
 
-        val fast_eliminated_choices = choices map {
-          Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacementsAndLatinBlockSinglePlacementSetsAndTwoAndThreeElementCoverings
-        } collect {
-          case Some(choice) => choice
+        // TODO: Peek ahead by breath here and reduce by not easy?
+        val puzzles = alternatives map { generateEasyPuzzle(maxInitialPlacings, _) } collect {
+          case Some(puzzle) => puzzle
         }
 
-        val colourings = fast_eliminated_choices map { generateColouring } collect {
-          case Some(colouring) => colouring
-        }
+        puzzles.headOption
 
-        (colourings take 1).toList.headOption
+      case _ => // Either not easy or not permitted and further search won't improve
+        None
     }
   }
 
-  //  def generateEasyPuzzle(maxInitialPlacings: Int = 26): Option[Board] = {}
-  //  def generateMediumPuzzle(): Option[Board] = {}
-  //  def generateHardPuzzle(): Option[Board] = {}
+  def generateMediumPuzzle(
+    graphColouringProblem: GraphColouringProblem = generateColouring().get): Option[GraphColouringProblem] = {
 
-  def generateSolvedBoard(): Board = generateColouring(GraphColouringProblem.unconstrained).get.toBoard
+    graphColouringProblem match {
+      case Medium() => Some(graphColouringProblem)
 
-  // TODO: Delete following
-  private implicit def string2Rotate(s: String) = new {
-    def rotate(i: Int): String = (s drop i) ++ (s take i)
-    def unrotate(i: Int): String = rotate(s.length - i)
-  }
+      case Easy() => // try to expand to medium
+        // Pick a search and recur
+        val alternatives = graphColouringProblem.expandBySearch().shuffled
 
-  private def generatePuzzles(board: Board): Iterator[Board] = {
-    Difficulty.isPermitted(board) match {
-      case false => Iterator()
-      case _ =>
-        // Remove elements and recur
-        val s = board.toString
-        val splits = (0 to s.length) map { split => s.rotate(split).replaceFirst("\\d", "_").unrotate(split) }
-        val choices = splits.toSet.toList.shuffled.toIterator
+        // TODO: Peek ahead by breath here, preference by medium and reduce by not easy or medium?
+        val puzzles = alternatives map { generateMediumPuzzle } collect {
+          case Some(puzzle) => puzzle
+        }
 
-        Iterator(board) ++ (choices map { Board(_) } flatMap { generatePuzzles })
+        puzzles.headOption
+
+      case _ => // Either hard or not permitted and further search won't improve
+        None
     }
   }
 
-  def generatePuzzleBoards(): Iterator[Board] = generatePuzzles(generateSolvedBoard())
+  def generateHardPuzzle(
+    graphColouringProblem: GraphColouringProblem = generateColouring().get): Option[GraphColouringProblem] = {
+
+    Difficulty(graphColouringProblem) match {
+      case Hard => Some(graphColouringProblem)
+
+      case NotPermitted => // Further search won't improve
+        None
+
+      case _ => // try to expand to hard
+        // Pick a search and recur
+        val alternatives = graphColouringProblem.expandBySearch().shuffled
+
+        // TODO: Peek ahead by breath here, preference by hard then medium and reduce by not permitted?
+        val puzzles = alternatives map { generateHardPuzzle } collect {
+          case Some(puzzle) => puzzle
+        }
+
+        puzzles.headOption
+    }
+  }
 
 }

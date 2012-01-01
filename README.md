@@ -28,7 +28,7 @@ the script:
 
      gen-idea
 
- The `sbt` console is very useful. FYou can do e.g. the following:
+ The `sbt` console is very useful. You can do e.g. the following:
 
      > console
      ...

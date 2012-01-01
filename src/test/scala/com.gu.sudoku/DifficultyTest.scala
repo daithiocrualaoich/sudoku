@@ -6,54 +6,54 @@ import org.scalatest.matchers.ShouldMatchers
 class DifficultyTest extends FlatSpec with ShouldMatchers with TestBoards {
 
   "Difficulty" should "determine easy boards" in {
-    Difficulty.isEasy(sudoku2054easy) should be(true)
-    Difficulty.isEasy(sudoku2055medium) should be(false)
-    Difficulty.isEasy(sudoku2056medium) should be(false)
-    Difficulty.isEasy(sudoku2057hard) should be(false)
-    Difficulty.isEasy(sudoku2058hard) should be(false)
-    Difficulty.isEasy(sudoku2059hard) should be(false)
-    Difficulty.isEasy(sudoku2060easy) should be(true)
-    Difficulty.isEasy(sudoku2061medium) should be(false)
-    Difficulty.isEasy(sudoku2062medium) should be(false)
-    Difficulty.isEasy(sudoku2063hard) should be(false)
-    Difficulty.isEasy(sudoku2064hard) should be(false)
-    Difficulty.isEasy(sudoku2065hard) should be(false)
-    Difficulty.isEasy(sudoku2066easy) should be(true)
-    Difficulty.isEasy(sudoku2067medium) should be(false)
+    Difficulty(sudoku2054easy) should be(Easy)
+    Difficulty(sudoku2055medium) should not be (Easy)
+    Difficulty(sudoku2056medium) should not be (Easy)
+    Difficulty(sudoku2057hard) should not be (Easy)
+    Difficulty(sudoku2058hard) should not be (Easy)
+    Difficulty(sudoku2059hard) should not be (Easy)
+    Difficulty(sudoku2060easy) should be(Easy)
+    Difficulty(sudoku2061medium) should not be (Easy)
+    Difficulty(sudoku2062medium) should not be (Easy)
+    Difficulty(sudoku2063hard) should not be (Easy)
+    Difficulty(sudoku2064hard) should not be (Easy)
+    Difficulty(sudoku2065hard) should not be (Easy)
+    Difficulty(sudoku2066easy) should be(Easy)
+    Difficulty(sudoku2067medium) should not be (Easy)
   }
 
   it should "determine medium boards" in {
-    Difficulty.isMedium(sudoku2054easy) should be(false)
-    Difficulty.isMedium(sudoku2055medium) should be(true)
-    Difficulty.isMedium(sudoku2056medium) should be(true)
-    Difficulty.isMedium(sudoku2057hard) should be(false)
-    Difficulty.isMedium(sudoku2058hard) should be(false)
-    Difficulty.isMedium(sudoku2059hard) should be(false)
-    Difficulty.isMedium(sudoku2060easy) should be(false)
-    Difficulty.isMedium(sudoku2061medium) should be(true)
-    Difficulty.isMedium(sudoku2062medium) should be(true)
-    Difficulty.isMedium(sudoku2063hard) should be(false)
-    Difficulty.isMedium(sudoku2064hard) should be(false)
-    Difficulty.isMedium(sudoku2065hard) should be(false)
-    Difficulty.isMedium(sudoku2066easy) should be(false)
-    Difficulty.isMedium(sudoku2067medium) should be(true)
+    Difficulty(sudoku2054easy) should not be (Medium)
+    Difficulty(sudoku2055medium) should be(Medium)
+    Difficulty(sudoku2056medium) should be(Medium)
+    Difficulty(sudoku2057hard) should not be (Medium)
+    Difficulty(sudoku2058hard) should not be (Medium)
+    Difficulty(sudoku2059hard) should not be (Medium)
+    Difficulty(sudoku2060easy) should not be (Medium)
+    Difficulty(sudoku2061medium) should be(Medium)
+    Difficulty(sudoku2062medium) should be(Medium)
+    Difficulty(sudoku2063hard) should not be (Medium)
+    Difficulty(sudoku2064hard) should not be (Medium)
+    Difficulty(sudoku2065hard) should not be (Medium)
+    Difficulty(sudoku2066easy) should not be (Medium)
+    Difficulty(sudoku2067medium) should be(Medium)
   }
 
   it should "determine hard boards" in {
-    Difficulty.isHard(sudoku2054easy) should be(false)
-    Difficulty.isHard(sudoku2055medium) should be(false)
-    Difficulty.isHard(sudoku2056medium) should be(false)
-    Difficulty.isHard(sudoku2057hard) should be(true)
-    Difficulty.isHard(sudoku2058hard) should be(true)
-    Difficulty.isHard(sudoku2059hard) should be(true)
-    Difficulty.isHard(sudoku2060easy) should be(false)
-    Difficulty.isHard(sudoku2061medium) should be(false)
-    Difficulty.isHard(sudoku2062medium) should be(false)
-    Difficulty.isHard(sudoku2063hard) should be(true)
-    Difficulty.isHard(sudoku2064hard) should be(true)
-    Difficulty.isHard(sudoku2065hard) should be(true)
-    Difficulty.isHard(sudoku2066easy) should be(false)
-    Difficulty.isHard(sudoku2067medium) should be(false)
+    Difficulty(sudoku2054easy) should not be (Hard)
+    Difficulty(sudoku2055medium) should not be (Hard)
+    Difficulty(sudoku2056medium) should not be (Hard)
+    Difficulty(sudoku2057hard) should be(Hard)
+    Difficulty(sudoku2058hard) should be(Hard)
+    Difficulty(sudoku2059hard) should be(Hard)
+    Difficulty(sudoku2060easy) should not be (Hard)
+    Difficulty(sudoku2061medium) should not be (Hard)
+    Difficulty(sudoku2062medium) should not be (Hard)
+    Difficulty(sudoku2063hard) should be(Hard)
+    Difficulty(sudoku2064hard) should be(Hard)
+    Difficulty(sudoku2065hard) should be(Hard)
+    Difficulty(sudoku2066easy) should not be (Hard)
+    Difficulty(sudoku2067medium) should not be (Hard)
   }
 
   it should "determine permitted boards" in {
@@ -75,18 +75,18 @@ class DifficultyTest extends FlatSpec with ShouldMatchers with TestBoards {
 
   it should "determine unpermitted boards" in {
     val notPermitted = Board("""
-         1 2 3 | _ _ _ | _ _ _
-         4 5 6 | _ _ _ | _ _ _
-         7 8 9 | _ _ _ | _ _ _
-        -----------------------
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-        -----------------------
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-      """)
+           1 2 3 | _ _ _ | _ _ _
+           4 5 6 | _ _ _ | _ _ _
+           7 8 9 | _ _ _ | _ _ _
+          -----------------------
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+          -----------------------
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+        """).toGraphColouringProblem
 
     Difficulty.isPermitted(notPermitted) should be(false)
   }
@@ -95,7 +95,7 @@ class DifficultyTest extends FlatSpec with ShouldMatchers with TestBoards {
 
 class EasyTest extends FlatSpec with ShouldMatchers with TestBoards {
 
-  def unextract(board: Board): Boolean = board match {
+  def unextract(graphColouringProblem: GraphColouringProblem): Boolean = graphColouringProblem match {
     case Easy() => true
     case _ => false
   }
@@ -121,7 +121,7 @@ class EasyTest extends FlatSpec with ShouldMatchers with TestBoards {
 
 class MediumTest extends FlatSpec with ShouldMatchers with TestBoards {
 
-  def unextract(board: Board): Boolean = board match {
+  def unextract(graphColouringProblem: GraphColouringProblem): Boolean = graphColouringProblem match {
     case Medium() => true
     case _ => false
   }
@@ -147,7 +147,7 @@ class MediumTest extends FlatSpec with ShouldMatchers with TestBoards {
 
 class HardTest extends FlatSpec with ShouldMatchers with TestBoards {
 
-  def unextract(board: Board): Boolean = board match {
+  def unextract(graphColouringProblem: GraphColouringProblem): Boolean = graphColouringProblem match {
     case Hard() => true
     case _ => false
   }
@@ -170,44 +170,44 @@ class HardTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 }
 
-class PermittedTest extends FlatSpec with ShouldMatchers with TestBoards {
+class NotPermittedTest extends FlatSpec with ShouldMatchers with TestBoards {
 
-  def unextract(board: Board): Boolean = board match {
-    case Permitted() => true
+  def unextract(graphColouringProblem: GraphColouringProblem): Boolean = graphColouringProblem match {
+    case NotPermitted() => true
     case _ => false
   }
 
-  "Permitted" should "unextract" in {
-    unextract(sudoku2054easy) should be(true)
-    unextract(sudoku2055medium) should be(true)
-    unextract(sudoku2056medium) should be(true)
-    unextract(sudoku2057hard) should be(true)
-    unextract(sudoku2058hard) should be(true)
-    unextract(sudoku2059hard) should be(true)
-    unextract(sudoku2060easy) should be(true)
-    unextract(sudoku2061medium) should be(true)
-    unextract(sudoku2062medium) should be(true)
-    unextract(sudoku2063hard) should be(true)
-    unextract(sudoku2064hard) should be(true)
-    unextract(sudoku2065hard) should be(true)
-    unextract(sudoku2066easy) should be(true)
-    unextract(sudoku2067medium) should be(true)
+  "NotPermitted" should "unextract" in {
+    unextract(sudoku2054easy) should be(false)
+    unextract(sudoku2055medium) should be(false)
+    unextract(sudoku2056medium) should be(false)
+    unextract(sudoku2057hard) should be(false)
+    unextract(sudoku2058hard) should be(false)
+    unextract(sudoku2059hard) should be(false)
+    unextract(sudoku2060easy) should be(false)
+    unextract(sudoku2061medium) should be(false)
+    unextract(sudoku2062medium) should be(false)
+    unextract(sudoku2063hard) should be(false)
+    unextract(sudoku2064hard) should be(false)
+    unextract(sudoku2065hard) should be(false)
+    unextract(sudoku2066easy) should be(false)
+    unextract(sudoku2067medium) should be(false)
 
     val notPermitted = Board("""
-         1 2 3 | _ _ _ | _ _ _
-         4 5 6 | _ _ _ | _ _ _
-         7 8 9 | _ _ _ | _ _ _
-        -----------------------
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-        -----------------------
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-      """)
+           1 2 3 | _ _ _ | _ _ _
+           4 5 6 | _ _ _ | _ _ _
+           7 8 9 | _ _ _ | _ _ _
+          -----------------------
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+          -----------------------
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+           _ _ _ | _ _ _ | _ _ _
+        """).toGraphColouringProblem
 
-    unextract(notPermitted) should be(false)
+    unextract(notPermitted) should be(true)
   }
 
 }

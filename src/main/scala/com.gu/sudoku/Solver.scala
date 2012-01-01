@@ -1,7 +1,10 @@
 package com.gu.sudoku
 
-object Solver {
+object Solved {
+  def unapply(graphColouringProblem: GraphColouringProblem): Boolean = Solver(graphColouringProblem).isDefined
+}
 
+object Solver {
   def solveByIterateEliminateByLatinBlockExclusion(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
     Some(puzzle.eliminateByLatinBlockExclusion()) filter { _.valid }
   }
@@ -52,7 +55,7 @@ object Solver {
     puzzle.reduceBySearch() filter { _.valid }
   }
 
-  private def solutions(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
+  def solutions(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
     val reduction = solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacementsAndLatinBlockSinglePlacementSetsAndTwoAndThreeElementCoverings(puzzle)
 
     val search = reduction.toIterator flatMap { reduced: GraphColouringProblem =>
@@ -65,10 +68,12 @@ object Solver {
     search filter { _.solved }
   }
 
-  // TODO: Change to use GraphColouringProblem instead of Board
+  def hasUniqueSolution(graphColouringProblem: GraphColouringProblem): Boolean = {
+    (solutions(graphColouringProblem) take 2).length == 1
+  }
 
-  def solutions(board: Board): Iterator[Board] = solutions(GraphColouringProblem(board)) map { _.toBoard }
-  def hasUniqueSolution(board: Board): Boolean = (solutions(board) take 2).length == 1
-
-  def solve(board: Board): Option[Board] = (solutions(board) take 1).toList.headOption
+  def apply(graphColouringProblem: GraphColouringProblem): Option[GraphColouringProblem] = {
+    solutions(graphColouringProblem).headOption
+  }
 }
+

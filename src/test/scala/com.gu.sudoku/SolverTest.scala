@@ -6,7 +6,7 @@ import org.scalatest.matchers.ShouldMatchers
 class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
 
   "Solver" should "solve sudoku2054easy" in {
-    val solution = Solver.solve(sudoku2054easy)
+    val solution = Solver(sudoku2054easy)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -16,7 +16,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2055medium" in {
-    val solution = Solver.solve(sudoku2055medium)
+    val solution = Solver(sudoku2055medium)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -26,7 +26,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2056medium" in {
-    val solution = Solver.solve(sudoku2056medium)
+    val solution = Solver(sudoku2056medium)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -36,7 +36,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2057hard" in {
-    val solution = Solver.solve(sudoku2057hard)
+    val solution = Solver(sudoku2057hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -46,7 +46,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2058hard" in {
-    val solution = Solver.solve(sudoku2058hard)
+    val solution = Solver(sudoku2058hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -56,7 +56,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2059hard" in {
-    val solution = Solver.solve(sudoku2059hard)
+    val solution = Solver(sudoku2059hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -66,7 +66,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2060easy" in {
-    val solution = Solver.solve(sudoku2060easy)
+    val solution = Solver(sudoku2060easy)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -76,7 +76,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2061medium" in {
-    val solution = Solver.solve(sudoku2061medium)
+    val solution = Solver(sudoku2061medium)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -86,7 +86,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2062medium" in {
-    val solution = Solver.solve(sudoku2062medium)
+    val solution = Solver(sudoku2062medium)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -96,7 +96,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2063hard" in {
-    val solution = Solver.solve(sudoku2063hard)
+    val solution = Solver(sudoku2063hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -106,7 +106,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2064hard" in {
-    val solution = Solver.solve(sudoku2064hard)
+    val solution = Solver(sudoku2064hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -116,7 +116,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2065hard" in {
-    val solution = Solver.solve(sudoku2065hard)
+    val solution = Solver(sudoku2065hard)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -126,7 +126,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2066easy" in {
-    val solution = Solver.solve(sudoku2066easy)
+    val solution = Solver(sudoku2066easy)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -136,7 +136,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2067medium" in {
-    val solution = Solver.solve(sudoku2067medium)
+    val solution = Solver(sudoku2067medium)
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -164,18 +164,18 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
 
   it should "determine multiple solutions" in {
     val underconstrained = Board("""
-         1 2 3 | _ _ _ | _ _ _
-         4 5 6 | _ _ _ | _ _ _
-         7 8 9 | _ _ _ | _ _ _
-        -----------------------
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-        -----------------------
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-         _ _ _ | _ _ _ | _ _ _
-      """)
+             1 2 3 | _ _ _ | _ _ _
+             4 5 6 | _ _ _ | _ _ _
+             7 8 9 | _ _ _ | _ _ _
+            -----------------------
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+            -----------------------
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+          """).toGraphColouringProblem
 
     (Solver.solutions(underconstrained) take 10).size should be(10)
     Solver.hasUniqueSolution(underconstrained) should be(false)
