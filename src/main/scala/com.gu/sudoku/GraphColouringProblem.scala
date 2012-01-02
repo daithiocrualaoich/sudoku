@@ -1,9 +1,16 @@
 package com.gu.sudoku
 
 case class Node(label: (Z_9, Z_9), candidates: Set[Z_9]) {
+
+  def sameColumn(that: Node): Boolean = this.label._1 == that.label._1
+  def sameRow(that: Node): Boolean = this.label._2 == that.label._2
+  def sameZone(that: Node): Boolean = {
+    (this.label._1.representative - 1) / 3 == (that.label._1.representative - 1) / 3 &&
+      (this.label._2.representative - 1) / 3 == (that.label._2.representative - 1) / 3
+  }
+
   def neighbours(that: Node): Boolean = neighbours(that.label)
   def neighbours(label: (Z_9, Z_9)): Boolean = neighbours(label._1, label._2)
-
   def neighbours(column: Z_9, row: Z_9): Boolean = {
     // No self edges
     !(this.label._1 == column && this.label._2 == row) &&
@@ -13,62 +20,113 @@ case class Node(label: (Z_9, Z_9), candidates: Set[Z_9]) {
       )
   }
 
-  def sameColumn(that: Node): Boolean = this.label._1 == that.label._1
-  def sameRow(that: Node): Boolean = this.label._2 == that.label._2
-  def sameZone(that: Node): Boolean = {
-    (this.label._1.representative - 1) / 3 == (that.label._1.representative - 1) / 3 &&
-      (this.label._2.representative - 1) / 3 == (that.label._2.representative - 1) / 3
-  }
+  lazy val neighbourLabels: Set[(Z_9, Z_9)] = (Z_9.set cross Z_9.set) filter { neighbours }
 
-  lazy val neighbourLabels: Set[(Z_9, Z_9)] = (Z_9.all.toSet cross Z_9.all) filter { neighbours }
+  lazy val index: Int = Node.index(label)
+}
 
-  lazy val index: Int = label._1.representative + (label._2.representative - 1) * 9
+object Node {
+  def index(label: (Z_9, Z_9)): Int = index(label._1, label._2)
+  def index(column: Z_9, row: Z_9): Int =
+    column.representative + (row.representative - 1) * 9 - 1
 }
 
 case class Graph(nodes: Set[Node]) {
   // Edge relationships are inferred from labels
 
-  private lazy val nodeLookup: Map[(Z_9, Z_9), Node] = nodes toMapWithKeys { _.label }
+  private lazy val nodeLookup = (nodes.toList sortBy { _.index }).toArray
 
   def apply(column: Z_9, row: Z_9): Node = apply((column, row))
-  def apply(label: (Z_9, Z_9)): Node = nodeLookup(label)
+  def apply(label: (Z_9, Z_9)): Node = nodeLookup(Node index label)
 
   def replace(node: Node, replacement: Node): Graph = Graph(nodes - node + replacement)
 
   def rowOf(label: (Z_9, Z_9)): Set[Node] = rowOf(apply(label))
   def rowOf(column: Z_9, row: Z_9): Set[Node] = rowOf(apply(column, row))
-  def rowOf(node: Node): Set[Node] = nodes filter { node sameRow _ }
+  def rowOf(node: Node): Set[Node] = {
+    val indexOffset = (node.index / 9) * 9
+    (0 to 8).toSet map { column: Int => column + indexOffset } map { nodeLookup }
+  }
 
   def columnOf(label: (Z_9, Z_9)): Set[Node] = columnOf(apply(label))
   def columnOf(column: Z_9, row: Z_9): Set[Node] = columnOf(apply(column, row))
-  def columnOf(node: Node): Set[Node] = nodes filter { node sameColumn _ }
+  def columnOf(node: Node): Set[Node] = {
+    val indexOffset = node.index % 9
+    (0 to 8).toSet map { row: Int => row * 9 + indexOffset } map { nodeLookup }
+  }
 
   def zoneOf(label: (Z_9, Z_9)): Set[Node] = zoneOf(apply(label))
   def zoneOf(column: Z_9, row: Z_9): Set[Node] = zoneOf(apply(column, row))
-  def zoneOf(node: Node): Set[Node] = nodes filter { node sameZone _ }
+  def zoneOf(node: Node): Set[Node] = {
+    // TODO: Implement using indices only
+    nodes filter { node sameZone _ }
+  }
+
+  def constrain(label: (Z_9, Z_9), element: Z_9): Graph =
+    constrain(label._1, label._2, Set(element))
+
+  def constrain(col: Z_9, row: Z_9, element: Z_9): Graph =
+    constrain(col, row, Set(element))
+
+  def constrain(label: (Z_9, Z_9), elements: Set[Z_9]): Graph =
+    constrain(label._1, label._2, elements)
+
+  def constrain(column: Z_9, row: Z_9, elements: Set[Z_9]): Graph = {
+    val oldNode: Node = apply(column, row)
+    val newCandidates = oldNode.candidates intersect elements
+
+    (oldNode.candidates == newCandidates) match {
+      case true => this
+
+      case false =>
+        replace(oldNode, oldNode.copy(candidates = newCandidates))
+    }
+  }
+
+  def constrainNeighbours(label: (Z_9, Z_9), elements: Set[Z_9]): Graph =
+    constrainNeighbours(label._1, label._2, elements)
+
+  def constrainNeighbours(column: Z_9, row: Z_9, elements: Set[Z_9]): Graph = {
+    val node = apply(column, row)
+
+    var _graph = this
+    node.neighbourLabels foreach { neighbourLabel =>
+      _graph = _graph.constrain(neighbourLabel, elements)
+    }
+
+    _graph
+  }
+
+  lazy val zeroElementPlacings: Set[Node] = nodes filter { _.candidates.isEmpty }
+
+  lazy val oneElementPlacings: Set[Node] = nodes filter { _.candidates.size == 1 }
+  lazy val twoElementPlacings: Set[Node] = nodes filter { _.candidates.size == 2 }
+  lazy val threeElementPlacings: Set[Node] = nodes filter { _.candidates.size == 3 }
 }
 
 object GraphColouringProblem {
 
   def apply(board: Board): GraphColouringProblem = {
-    var graph = unconstrained
+    var _graph = unconstrained.graph
 
-    for (column <- Z_9.all) {
-      for (row <- Z_9.all) {
+    for (column <- Z_9.set) {
+      for (row <- Z_9.set) {
         board(column, row) foreach { element =>
-          graph = graph.addConstraintToNode(column, row, element)
+          _graph = _graph.constrain(column, row, element)
         }
       }
     }
 
-    graph
+    new GraphColouringProblem {
+      protected val graph = _graph
+    }
   }
 
   lazy val unconstrained = new GraphColouringProblem {
     protected val graph = {
-      val labels = (Z_9.all cross Z_9.all).toSet[(Z_9, Z_9)]
+      val labels: Set[(Z_9, Z_9)] = (Z_9.set cross Z_9.set)
       val nodes = labels map {
-        label => Node(label, Z_9.all.toSet)
+        label => Node(label, Z_9.set)
       }
 
       Graph(nodes)
@@ -82,57 +140,20 @@ trait GraphColouringProblem { self =>
 
   def apply(column: Z_9, row: Z_9): Node = graph(column, row)
 
-  private def addConstraintToNode(label: (Z_9, Z_9), element: Z_9): GraphColouringProblem =
-    addConstraintsToNode(label._1, label._2, Set(element))
-
-  private def addConstraintToNode(col: Z_9, row: Z_9, element: Z_9): GraphColouringProblem =
-    addConstraintsToNode(col, row, Set(element))
-
-  private def addConstraintsToNode(label: (Z_9, Z_9), elements: Set[Z_9]): GraphColouringProblem =
-    addConstraintsToNode(label._1, label._2, elements)
-
-  private def addConstraintsToNeighbours(label: (Z_9, Z_9), elements: Set[Z_9]): GraphColouringProblem =
-    addConstraintsToNeighbours(label._1, label._2, elements)
-
-  private def addConstraintsToNode(column: Z_9, row: Z_9, elements: Set[Z_9]): GraphColouringProblem = {
-    val oldNode: Node = graph(column, row)
-    val newCandidates = oldNode.candidates intersect elements
-
-    (oldNode.candidates == newCandidates) match {
-      case true => this
-
-      case false =>
-        val newNode: Node = oldNode.copy(candidates = newCandidates)
-
-        new GraphColouringProblem {
-          protected val graph = self.graph.replace(oldNode, newNode)
-        }
-    }
-  }
-
-  private def addConstraintsToNeighbours(column: Z_9, row: Z_9, elements: Set[Z_9]): GraphColouringProblem = {
-    val node = graph(column, row)
-
-    var _graphColouringProblem = this
-    node.neighbourLabels foreach { neighbourLabel =>
-      _graphColouringProblem = _graphColouringProblem.addConstraintsToNode(neighbourLabel, elements)
-    }
-
-    _graphColouringProblem
-  }
-
   def singleEliminateByLatinBlockExclusion(): GraphColouringProblem = {
     // For each placement, place elements that have only one possible 
     // candidate and exclude value from neighbour candidate sets.
 
-    var _graphColouringProblem = this
-    _graphColouringProblem.oneElementPlacings foreach { singleValueNode =>
-      _graphColouringProblem = _graphColouringProblem.addConstraintsToNeighbours(
+    var _graph = graph
+    _graph.oneElementPlacings foreach { singleValueNode =>
+      _graph = _graph.constrainNeighbours(
         singleValueNode.label,
-        Z_9.all.toSet -- singleValueNode.candidates)
+        Z_9.set -- singleValueNode.candidates)
     }
 
-    _graphColouringProblem
+    new GraphColouringProblem {
+      protected val graph = _graph
+    }
   }
 
   def eliminateByLatinBlockExclusion(): GraphColouringProblem = {
@@ -165,21 +186,25 @@ trait GraphColouringProblem { self =>
       case (_, node) => node.candidates.size != 1
     }
 
-    var graphColouringProblem = this
+    var _graph = graph
     newSinglePlacements foreach {
       case (value, node) =>
-        graphColouringProblem = graphColouringProblem.addConstraintToNode(node.label, value)
+        _graph = _graph.constrain(node.label, value)
     }
 
-    graphColouringProblem
+    new GraphColouringProblem {
+      protected val graph = _graph
+    }
   }
 
   def singleEliminateByLatinBlockSingleRowPlacements(): GraphColouringProblem = {
     // For each row, place elements that have only one possible placing
 
     var _graphColouringProblem = this
-    for (row <- Z_9.all) {
-      _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementsIn(_graphColouringProblem.graph.rowOf(One, row))
+    for (row <- Z_9.set) {
+      _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementsIn(
+        _graphColouringProblem.graph.rowOf(One, row)
+      )
     }
 
     _graphColouringProblem
@@ -189,8 +214,10 @@ trait GraphColouringProblem { self =>
     // For each column, place elements that have only one possible placing
 
     var _graphColouringProblem = this
-    for (column <- Z_9.all) {
-      _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementsIn(_graphColouringProblem.graph.columnOf(column, One))
+    for (column <- Z_9.set) {
+      _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementsIn(
+        _graphColouringProblem.graph.columnOf(column, One)
+      )
     }
 
     _graphColouringProblem
@@ -234,16 +261,18 @@ trait GraphColouringProblem { self =>
       case (value, nodes) => nodes.size == 2 || nodes.size == 3
     }
 
-    var _graphColouringProblem = this
+    var _graph = graph
     singlePlacementSets foreach {
       case (value, nodes) =>
         val commonNeighbours = nodes map { node => graph(node.label).neighbourLabels } reduce { _ intersect _ }
         commonNeighbours foreach { neighbourLabel =>
-          _graphColouringProblem = _graphColouringProblem.addConstraintsToNode(neighbourLabel, Z_9.all.toSet - value)
+          _graph = _graph.constrain(neighbourLabel, Z_9.set - value)
         }
     }
 
-    _graphColouringProblem
+    new GraphColouringProblem {
+      protected val graph = _graph
+    }
   }
 
   def eliminateByLatinBlockSinglePlacementSets(): GraphColouringProblem = {
@@ -254,14 +283,14 @@ trait GraphColouringProblem { self =>
       var _graphColouringProblem = graphColouringProblem
 
       // Eliminate by rows
-      for (row <- Z_9.all) {
+      for (row <- Z_9.set) {
         _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementSetsIn(
           _graphColouringProblem.graph.rowOf(One, row)
         )
       }
 
       // Eliminate by columns
-      for (column <- Z_9.all) {
+      for (column <- Z_9.set) {
         _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementSetsIn(
           _graphColouringProblem.graph.columnOf(column, One)
         )
@@ -286,9 +315,9 @@ trait GraphColouringProblem { self =>
     // of these values.
 
     iterate(this) { graphColouringProblem =>
-      var _graphColouringProblem = graphColouringProblem
+      var _graph = graphColouringProblem.graph
 
-      val nodesWithTwoElementCandidateSets: Set[Node] = twoElementPlacings
+      val nodesWithTwoElementCandidateSets: Set[Node] = _graph.twoElementPlacings
       val partitionedByCandidateSets: Map[Set[Z_9], Set[Node]] = nodesWithTwoElementCandidateSets groupBy { _.candidates }
       val nonSingletonPartitions: Set[Set[Node]] = (partitionedByCandidateSets.values filter { _.size > 1 }).toSet
 
@@ -308,11 +337,13 @@ trait GraphColouringProblem { self =>
           val commonNeighbours: Set[(Z_9, Z_9)] = n1.neighbourLabels intersect n2.neighbourLabels
 
           commonNeighbours foreach { neighbourLabel =>
-            _graphColouringProblem = _graphColouringProblem.addConstraintsToNode(neighbourLabel, Z_9.all.toSet -- coveringElements)
+            _graph = _graph.constrain(neighbourLabel, Z_9.set -- coveringElements)
           }
       }
 
-      _graphColouringProblem
+      new GraphColouringProblem {
+        protected val graph = _graph
+      }
     }
   }
 
@@ -321,16 +352,16 @@ trait GraphColouringProblem { self =>
     // values excludes any node which is a neighbour of all from having any of these values.
 
     iterate(this) { graphColouringProblem =>
-      var _graphColouringProblem = graphColouringProblem
+      var _graph = graphColouringProblem.graph
 
       val nodesWithTwoOrThreeElementCandidateSets: Set[Node] =
-        _graphColouringProblem.twoElementPlacings ++ _graphColouringProblem.threeElementPlacings
+        _graph.twoElementPlacings ++ _graph.threeElementPlacings
 
       // Expand out two element candidate sets with all possibles
       val nodesWithThreeElementCandidateSets: Set[Node] = nodesWithTwoOrThreeElementCandidateSets flatMap { node =>
         node.candidates.size match {
           case 3 => List(node)
-          case 2 => (Z_9.all.toSet -- node.candidates) map { padding => Node(node.label, node.candidates + padding) }
+          case 2 => (Z_9.set -- node.candidates) map { padding => node.copy(candidates = node.candidates + padding) }
         }
       }
 
@@ -354,11 +385,13 @@ trait GraphColouringProblem { self =>
           val commonNeighbours: Set[(Z_9, Z_9)] = n1.neighbourLabels filter { n2.neighbours } filter { n3.neighbours }
 
           commonNeighbours foreach { neighbourLabel =>
-            _graphColouringProblem = _graphColouringProblem.addConstraintsToNode(neighbourLabel, Z_9.all.toSet -- coveringElements)
+            _graph = _graph.constrain(neighbourLabel, Z_9.set -- coveringElements)
           }
       }
 
-      _graphColouringProblem
+      new GraphColouringProblem {
+        protected val graph = _graph
+      }
     }
   }
 
@@ -392,13 +425,13 @@ trait GraphColouringProblem { self =>
   def expandBySearch(): Iterator[GraphColouringProblem] = {
     // Pick any node with candidate set size 1 and add graph to iterator without that placing
 
-    val nodes: Set[Node] = oneElementPlacings
+    val nodes: Set[Node] = graph.oneElementPlacings
 
     nodes match {
       case EmptySet() => Iterator(this)
       case _ =>
         nodes.toIterator map { node =>
-          val newNode = node.copy(candidates = Z_9.all.toSet)
+          val newNode = node.copy(candidates = Z_9.set)
           new GraphColouringProblem {
             protected val graph = self.graph.replace(node, newNode)
           }
@@ -407,15 +440,20 @@ trait GraphColouringProblem { self =>
   }
 
   lazy val candidateSetsSizeSum: Int = (graph.nodes.toList map { _.candidates.size }).sum
+  lazy val numPlacings = graph.oneElementPlacings.size
+  lazy val solved = valid && numPlacings == 81
 
-  lazy val oneElementPlacings: Set[Node] = graph.nodes filter { _.candidates.size == 1 }
-  lazy val twoElementPlacings: Set[Node] = graph.nodes filter { _.candidates.size == 2 }
-  lazy val threeElementPlacings: Set[Node] = graph.nodes filter { _.candidates.size == 3 }
+  lazy val valid = {
+    val latinPropertyViolations = (graph.oneElementPlacings cross graph.oneElementPlacings) filter {
+      case (n1, n2) => n1.index < n2.index
+    } filter {
+      case (n1, n2) => n1.candidates == n2.candidates
+    } filter {
+      case (n1, n2) => n1 neighbours n2
+    }
 
-  lazy val numPlacings = oneElementPlacings.size
-
-  lazy val valid = toBoard.valid
-  lazy val solved = toBoard.solved
+    graph.zeroElementPlacings.isEmpty && latinPropertyViolations.isEmpty
+  }
 
   lazy val toBoard: Board = Board(this)
 

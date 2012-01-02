@@ -6,7 +6,7 @@ import org.scalatest.matchers.ShouldMatchers
 class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
 
   "Solver" should "solve sudoku2054easy" in {
-    val solution = Solver(sudoku2054easy)
+    val solution = Solver(sudoku2054easy).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -16,7 +16,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2055medium" in {
-    val solution = Solver(sudoku2055medium)
+    val solution = Solver(sudoku2055medium).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -26,7 +26,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2056medium" in {
-    val solution = Solver(sudoku2056medium)
+    val solution = Solver(sudoku2056medium).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -36,7 +36,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2057hard" in {
-    val solution = Solver(sudoku2057hard)
+    val solution = Solver(sudoku2057hard).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -46,7 +46,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2058hard" in {
-    val solution = Solver(sudoku2058hard)
+    val solution = Solver(sudoku2058hard).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -56,7 +56,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2059hard" in {
-    val solution = Solver(sudoku2059hard)
+    val solution = Solver(sudoku2059hard).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -66,7 +66,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2060easy" in {
-    val solution = Solver(sudoku2060easy)
+    val solution = Solver(sudoku2060easy).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -76,7 +76,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2061medium" in {
-    val solution = Solver(sudoku2061medium)
+    val solution = Solver(sudoku2061medium).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -86,7 +86,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2062medium" in {
-    val solution = Solver(sudoku2062medium)
+    val solution = Solver(sudoku2062medium).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -96,7 +96,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2063hard" in {
-    val solution = Solver(sudoku2063hard)
+    val solution = Solver(sudoku2063hard).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -106,7 +106,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2064hard" in {
-    val solution = Solver(sudoku2064hard)
+    val solution = Solver(sudoku2064hard).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -116,7 +116,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2065hard" in {
-    val solution = Solver(sudoku2065hard)
+    val solution = Solver(sudoku2065hard).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -126,7 +126,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2066easy" in {
-    val solution = Solver(sudoku2066easy)
+    val solution = Solver(sudoku2066easy).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -136,7 +136,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "solve sudoku2067medium" in {
-    val solution = Solver(sudoku2067medium)
+    val solution = Solver(sudoku2067medium).headOption
 
     solution should be('defined)
     solution.get.valid should be(true)
@@ -146,20 +146,20 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "determine unique solutions" in {
-    Solver.hasUniqueSolution(sudoku2054easy) should be(true)
-    Solver.hasUniqueSolution(sudoku2055medium) should be(true)
-    Solver.hasUniqueSolution(sudoku2056medium) should be(true)
-    Solver.hasUniqueSolution(sudoku2057hard) should be(true)
-    Solver.hasUniqueSolution(sudoku2058hard) should be(true)
-    Solver.hasUniqueSolution(sudoku2059hard) should be(true)
-    Solver.hasUniqueSolution(sudoku2060easy) should be(true)
-    Solver.hasUniqueSolution(sudoku2061medium) should be(true)
-    Solver.hasUniqueSolution(sudoku2062medium) should be(true)
-    Solver.hasUniqueSolution(sudoku2063hard) should be(true)
-    Solver.hasUniqueSolution(sudoku2064hard) should be(true)
-    Solver.hasUniqueSolution(sudoku2065hard) should be(true)
-    Solver.hasUniqueSolution(sudoku2066easy) should be(true)
-    Solver.hasUniqueSolution(sudoku2067medium) should be(true)
+    Solver(sudoku2054easy).drop(1).headOption should be(None)
+    Solver(sudoku2055medium).drop(1).headOption should be(None)
+    Solver(sudoku2056medium).drop(1).headOption should be(None)
+    Solver(sudoku2057hard).drop(1).headOption should be(None)
+    Solver(sudoku2058hard).drop(1).headOption should be(None)
+    Solver(sudoku2059hard).drop(1).headOption should be(None)
+    Solver(sudoku2060easy).drop(1).headOption should be(None)
+    Solver(sudoku2061medium).drop(1).headOption should be(None)
+    Solver(sudoku2062medium).drop(1).headOption should be(None)
+    Solver(sudoku2063hard).drop(1).headOption should be(None)
+    Solver(sudoku2064hard).drop(1).headOption should be(None)
+    Solver(sudoku2065hard).drop(1).headOption should be(None)
+    Solver(sudoku2066easy).drop(1).headOption should be(None)
+    Solver(sudoku2067medium).drop(1).headOption should be(None)
   }
 
   it should "determine multiple solutions" in {
@@ -177,8 +177,7 @@ class SolverTest extends FlatSpec with ShouldMatchers with TestBoards {
              _ _ _ | _ _ _ | _ _ _
           """).toGraphColouringProblem
 
-    (Solver.solutions(underconstrained) take 10).size should be(10)
-    Solver.hasUniqueSolution(underconstrained) should be(false)
+    (Solver(underconstrained) take 10).size should be(10)
   }
 
 }

@@ -19,13 +19,13 @@ object `package` {
     case _ => None
   }
 
-  def iterate[T](t: T)(iteration: T => T): T = {
-    var previous = t
-    var current = iteration(previous)
+  def iterate[T](initial: T)(next: T => T): T = {
+    var previous = initial
+    var current = next(previous)
 
     while (current != previous) {
       previous = current
-      current = iteration(previous)
+      current = next(previous)
     }
 
     current
@@ -40,22 +40,18 @@ object `package` {
     def shuffled(): List[A] = Random shuffle l
   }
 
-  implicit def list2Cross[A](esses: List[A]) = new {
-    def cross[B](ts: Iterable[B]): List[(A, B)] =
-      esses flatMap { s => ts map { t => (s, t) } }
+  implicit def list2Cross[A](l: List[A]) = new {
+    def cross[B](it: Iterable[B]): List[(A, B)] =
+      l flatMap { a => it map { b => (a, b) } }
   }
 
-  implicit def set2Cross[A](esses: Set[A]) = new {
-    def cross[B](ts: Iterable[B]): Set[(A, B)] =
-      esses flatMap { s => ts map { t => (s, t) } }
+  implicit def set2Cross[A](s: Set[A]) = new {
+    def cross[B](it: Iterable[B]): Set[(A, B)] =
+      s flatMap { a => it map { b => (a, b) } }
   }
 
-  implicit def set2ToMapWithKeys[T](tees: Set[T]) = new {
-    def toMapWithKeys[S](f: T => S): Map[S, T] = (tees map { tee => (f(tee), tee) }).toMap
-  }
-
-  implicit def set2NonEmpty[A](esses: Set[A]) = new {
-    lazy val nonEmpty: Boolean = esses.size != 0
+  implicit def set2IsNonEmpty[A](s: Set[A]) = new {
+    lazy val isNonEmpty: Boolean = !s.isEmpty
   }
 
   implicit def iterator2Shuffled[A](it: Iterator[A]) = new {

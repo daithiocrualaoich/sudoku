@@ -4,21 +4,10 @@ sealed abstract class Difficulty(val description: String) {
   override def toString(): String = description
 }
 
-object Easy extends Difficulty("Easy") {
-  def unapply(graphColouringProblem: GraphColouringProblem): Boolean = Difficulty(graphColouringProblem) == Easy
-}
-
-object Medium extends Difficulty("Medium") {
-  def unapply(graphColouringProblem: GraphColouringProblem): Boolean = Difficulty(graphColouringProblem) == Medium
-}
-
-object Hard extends Difficulty("Hard") {
-  def unapply(graphColouringProblem: GraphColouringProblem): Boolean = Difficulty(graphColouringProblem) == Hard
-}
-
-object NotPermitted extends Difficulty("Not Permitted") {
-  def unapply(graphColouringProblem: GraphColouringProblem): Boolean = Difficulty(graphColouringProblem) == NotPermitted
-}
+object Easy extends Difficulty("Easy")
+object Medium extends Difficulty("Medium")
+object Hard extends Difficulty("Hard")
+object NotPermitted extends Difficulty("Not Permitted")
 
 object Difficulty {
 
@@ -26,14 +15,11 @@ object Difficulty {
     val diff = difficulty(graphColouringProblem)
     val permitted = isPermitted(graphColouringProblem)
 
-    if (diff <= 15 && permitted) {
-      Easy
-    } else if (15 < diff && diff <= 40 && permitted) {
-      Medium
-    } else if (40 < diff && permitted) {
-      Hard
-    } else {
-      NotPermitted
+    (diff, permitted) match {
+      case (_, false) => NotPermitted
+      case (diff, _) if diff > 40 => Hard
+      case (diff, _) if diff > 15 => Medium
+      case _ => Easy
     }
   }
 
@@ -51,6 +37,7 @@ object Difficulty {
   }
 
   def isPermitted(graphColouringProblem: GraphColouringProblem): Boolean = {
+    // TODO: Reintroduce more prescriptive isPermitted test
     // Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacements(graphColouringProblem) exists { _.solved }
     Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacementsAndLatinBlockSinglePlacementSets(graphColouringProblem) exists { _.solved }
   }

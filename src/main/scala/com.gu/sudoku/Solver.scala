@@ -1,12 +1,18 @@
 package com.gu.sudoku
 
 object Solved {
-  def unapply(graphColouringProblem: GraphColouringProblem): Boolean = Solver(graphColouringProblem).isDefined
+  def unapply(graphColouringProblem: GraphColouringProblem): Option[GraphColouringProblem] = {
+    if (graphColouringProblem.solved) Some(graphColouringProblem) else None
+  }
 }
 
 object Solver {
   def solveByIterateEliminateByLatinBlockExclusion(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
-    Some(puzzle.eliminateByLatinBlockExclusion()) filter { _.valid }
+    val solution = iterate(puzzle) {
+      _.eliminateByLatinBlockExclusion()
+    }
+
+    Some(solution) filter { _.valid }
   }
 
   def solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacements(puzzle: GraphColouringProblem): Option[GraphColouringProblem] = {
@@ -51,29 +57,15 @@ object Solver {
     Some(solution) filter { _.valid }
   }
 
-  def solveByReduceBySearch(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
-    puzzle.reduceBySearch() filter { _.valid }
-  }
+  def apply(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
+    val reduced = solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacementsAndLatinBlockSinglePlacementSetsAndTwoAndThreeElementCoverings(puzzle)
 
-  def solutions(puzzle: GraphColouringProblem): Iterator[GraphColouringProblem] = {
-    val reduction = solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacementsAndLatinBlockSinglePlacementSetsAndTwoAndThreeElementCoverings(puzzle)
-
-    val search = reduction.toIterator flatMap { reduced: GraphColouringProblem =>
-      reduced.solved match {
-        case true => Iterator(reduced)
-        case false => solveByReduceBySearch(reduced) flatMap { solutions }
-      }
+    reduced.toIterator flatMap {
+      case Solved(solved) => Iterator(solved)
+      case unsolved =>
+        // TODO: Peek ahead by breath here and reduce by unsolvable?
+        unsolved.reduceBySearch() filter { _.valid } flatMap { apply }
     }
-
-    search filter { _.solved }
-  }
-
-  def hasUniqueSolution(graphColouringProblem: GraphColouringProblem): Boolean = {
-    (solutions(graphColouringProblem) take 2).length == 1
-  }
-
-  def apply(graphColouringProblem: GraphColouringProblem): Option[GraphColouringProblem] = {
-    solutions(graphColouringProblem).headOption
   }
 }
 

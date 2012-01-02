@@ -6,7 +6,7 @@ import org.scalatest.matchers.ShouldMatchers
 class GeneratorTest extends FlatSpec with ShouldMatchers with TestBoards {
 
   "Generator" should "generate an easy puzzle" in {
-    val puzzle = Generator.generateEasyPuzzle(graphColouringProblem = Solver(sudoku2060easy).get)
+    val puzzle = Generator.generateEasyPuzzle(graphColouringProblem = Solver(sudoku2060easy).next)
 
     puzzle should be('defined)
 
@@ -15,7 +15,7 @@ class GeneratorTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "generate an easy puzzle with <= 27 values" in {
-    val puzzle = Generator.generateEasyPuzzle(27, Solver(sudoku2060easy).get)
+    val puzzle = Generator.generateEasyPuzzle(27, Solver(sudoku2060easy).next)
 
     puzzle should be('defined)
 
@@ -27,7 +27,7 @@ class GeneratorTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "generate an easy puzzle with <= 30 values" in {
-    val puzzle = Generator.generateEasyPuzzle(30, Solver(sudoku2060easy).get)
+    val puzzle = Generator.generateEasyPuzzle(30, Solver(sudoku2060easy).next)
 
     puzzle should be('defined)
 
@@ -39,7 +39,7 @@ class GeneratorTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "generate a medium puzzle" in {
-    val puzzle = Generator.generateMediumPuzzle(graphColouringProblem = Solver(sudoku2055medium).get)
+    val puzzle = Generator.generateMediumPuzzle(graphColouringProblem = Solver(sudoku2055medium).next)
 
     puzzle should be('defined)
 
@@ -48,7 +48,7 @@ class GeneratorTest extends FlatSpec with ShouldMatchers with TestBoards {
   }
 
   it should "generate a hard puzzle" in {
-    val puzzle = Generator.generateHardPuzzle(graphColouringProblem = Solver(sudoku2057hard).get)
+    val puzzle = Generator.generateHardPuzzle(graphColouringProblem = Solver(sudoku2057hard).next)
 
     puzzle should be('defined)
 

@@ -7,6 +7,7 @@ sealed abstract class Z_9(val representative: Int) {
 object Z_9 {
   implicit val ordering: Ordering[Z_9] = Ordering[Int] on { _.representative }
   val all = List(One, Two, Three, Four, Five, Six, Seven, Eight, Nine)
+  val set = all.toSet
 
   def apply(i: Int): Z_9 = all.rotate(8)(i % 9)
 }
