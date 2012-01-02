@@ -2,10 +2,9 @@
 
 ./sbt011 assembly
 
-I=1
-while(true) do
-  echo "Generating page $I..." 
-  java -jar target/sudoku.jar "out/$I"
-  
-  I=`expr $I + 1`
+for ((i=0; i<10000;i++))
+do
+  printf -v ii "%04i" $i
+  echo "Generating page $ii..." 
+  java -jar target/sudoku.jar "out/$ii"
 done

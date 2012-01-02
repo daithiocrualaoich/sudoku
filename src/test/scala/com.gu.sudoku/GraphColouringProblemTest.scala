@@ -90,4 +90,118 @@ class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBo
     reduced(Two, Three).candidates should be(Z_9.all.toSet -- Set(One, Two, Three))
     reduced(Three, Three).candidates should be(Z_9.all.toSet -- Set(One, Two, Three))
   }
+
+  it should "reduce using latin block single row placements" in {
+    val graph = Board("""
+	   _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by row. 
+	   _ _ _ | 1 _ _ | _ _ _
+	   _ _ _ | _ _ _ | 1 _ _ 
+	  -----------------------
+	   _ 1 _ | _ _ _ | _ _ _ 
+	   _ _ _ | _ _ _ | _ _ _ 
+	   _ _ _ | _ _ _ | _ _ _ 
+	  -----------------------
+	   _ _ 1 | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _
+		""").toGraphColouringProblem.eliminateByLatinBlockExclusion
+
+    graph(One, One).candidates should be(Z_9.all.toSet)
+    graph(Two, One).candidates should be(Z_9.all.toSet - One)
+    graph(Three, One).candidates should be(Z_9.all.toSet - One)
+    graph(One, Two).candidates should be(Z_9.all.toSet - One)
+    graph(Two, Two).candidates should be(Z_9.all.toSet - One)
+    graph(Three, Two).candidates should be(Z_9.all.toSet - One)
+    graph(One, Three).candidates should be(Z_9.all.toSet - One)
+    graph(Two, Three).candidates should be(Z_9.all.toSet - One)
+    graph(Three, Three).candidates should be(Z_9.all.toSet - One)
+
+    val reduced = graph.singleEliminateByLatinBlockSingleRowPlacements
+
+    reduced(One, One).candidates should be(Set(One))
+    reduced(Two, One).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, One).candidates should be(Z_9.all.toSet - One)
+    reduced(One, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(Two, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(One, Three).candidates should be(Z_9.all.toSet - One)
+    reduced(Two, Three).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, Three).candidates should be(Z_9.all.toSet - One)
+  }
+
+  it should "reduce using latin block single column placements" in {
+    val graph = Board("""
+	   _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by column. 
+	   _ _ _ | 1 _ _ | _ _ _
+	   _ _ _ | _ _ _ | 1 _ _ 
+	  -----------------------
+	   _ 1 _ | _ _ _ | _ _ _ 
+	   _ _ _ | _ _ _ | _ _ _ 
+	   _ _ _ | _ _ _ | _ _ _ 
+	  -----------------------
+	   _ _ 1 | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _
+		""").toGraphColouringProblem.eliminateByLatinBlockExclusion
+
+    graph(One, One).candidates should be(Z_9.all.toSet)
+    graph(Two, One).candidates should be(Z_9.all.toSet - One)
+    graph(Three, One).candidates should be(Z_9.all.toSet - One)
+    graph(One, Two).candidates should be(Z_9.all.toSet - One)
+    graph(Two, Two).candidates should be(Z_9.all.toSet - One)
+    graph(Three, Two).candidates should be(Z_9.all.toSet - One)
+    graph(One, Three).candidates should be(Z_9.all.toSet - One)
+    graph(Two, Three).candidates should be(Z_9.all.toSet - One)
+    graph(Three, Three).candidates should be(Z_9.all.toSet - One)
+
+    val reduced = graph.singleEliminateByLatinBlockSingleColumnPlacements
+
+    reduced(One, One).candidates should be(Set(One))
+    reduced(Two, One).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, One).candidates should be(Z_9.all.toSet - One)
+    reduced(One, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(Two, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(One, Three).candidates should be(Z_9.all.toSet - One)
+    reduced(Two, Three).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, Three).candidates should be(Z_9.all.toSet - One)
+  }
+
+  it should "reduce using latin block single zone placements" in {
+    val graph = Board("""
+	   _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by zone. 
+	   _ _ _ | 1 _ _ | _ _ _
+	   _ _ _ | _ _ _ | 1 _ _ 
+	  -----------------------
+	   _ 1 _ | _ _ _ | _ _ _ 
+	   _ _ _ | _ _ _ | _ _ _ 
+	   _ _ _ | _ _ _ | _ _ _ 
+	  -----------------------
+	   _ _ 1 | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _
+		""").toGraphColouringProblem.eliminateByLatinBlockExclusion
+
+    graph(One, One).candidates should be(Z_9.all.toSet)
+    graph(Two, One).candidates should be(Z_9.all.toSet - One)
+    graph(Three, One).candidates should be(Z_9.all.toSet - One)
+    graph(One, Two).candidates should be(Z_9.all.toSet - One)
+    graph(Two, Two).candidates should be(Z_9.all.toSet - One)
+    graph(Three, Two).candidates should be(Z_9.all.toSet - One)
+    graph(One, Three).candidates should be(Z_9.all.toSet - One)
+    graph(Two, Three).candidates should be(Z_9.all.toSet - One)
+    graph(Three, Three).candidates should be(Z_9.all.toSet - One)
+
+    val reduced = graph.singleEliminateByLatinBlockSingleZonePlacements
+
+    reduced(One, One).candidates should be(Set(One))
+    reduced(Two, One).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, One).candidates should be(Z_9.all.toSet - One)
+    reduced(One, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(Two, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, Two).candidates should be(Z_9.all.toSet - One)
+    reduced(One, Three).candidates should be(Z_9.all.toSet - One)
+    reduced(Two, Three).candidates should be(Z_9.all.toSet - One)
+    reduced(Three, Three).candidates should be(Z_9.all.toSet - One)
+  }
 }

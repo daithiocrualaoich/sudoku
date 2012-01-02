@@ -75,18 +75,18 @@ class DifficultyTest extends FlatSpec with ShouldMatchers with TestBoards {
 
   it should "determine unpermitted boards" in {
     val notPermitted = Board("""
-           1 2 3 | _ _ _ | _ _ _
-           4 5 6 | _ _ _ | _ _ _
-           7 8 9 | _ _ _ | _ _ _
-          -----------------------
-           _ _ _ | _ _ _ | _ _ _
-           _ _ _ | _ _ _ | _ _ _
-           _ _ _ | _ _ _ | _ _ _
-          -----------------------
-           _ _ _ | _ _ _ | _ _ _
-           _ _ _ | _ _ _ | _ _ _
-           _ _ _ | _ _ _ | _ _ _
-        """).toGraphColouringProblem
+             1 2 3 | _ _ _ | _ _ _
+             4 5 6 | _ _ _ | _ _ _
+             7 8 9 | _ _ _ | _ _ _
+            -----------------------
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+            -----------------------
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+             _ _ _ | _ _ _ | _ _ _
+          """).toGraphColouringProblem
 
     Difficulty.isPermitted(notPermitted) should be(false)
   }

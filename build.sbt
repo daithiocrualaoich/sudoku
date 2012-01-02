@@ -15,6 +15,8 @@ scalaVersion := "2.9.1"
 
 seq(sbtassembly.Plugin.assemblySettings: _*)
 
+test in assembly := {}
+
 jarName in assembly := "sudoku.jar"
 
 
@@ -24,12 +26,10 @@ jarName in assembly := "sudoku.jar"
 // Dependency Management
 
 resolvers ++= Seq(
-  "Sonatype OSS" at "http://oss.sonatype.org/content/repositories/releases/",
-  "daithiocrualaoich GitHub Releases" at "http://daithiocrualaoich.github.com/maven/repo-releases"
+  "Sonatype OSS" at "http://oss.sonatype.org/content/repositories/releases/"
 )
 
 libraryDependencies ++= Seq(
-  "scalax" %% "graph-core" % "1.3.2",
   "batik" % "batik-svg-dom" % "1.6-1",
   "batik" % "batik-svggen" % "1.6-1",
   "batik" % "batik-rasterizer" % "1.6-1",

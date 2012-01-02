@@ -44,7 +44,7 @@ object Difficulty {
     var puzzle = graphColouringProblem
 
     for (i <- 1 to 5) {
-      puzzle = puzzle.singleEliminateByLatinBlockExclusion().singleEliminateByZoneSinglePlacements()
+      puzzle = puzzle.singleEliminateByLatinBlockExclusion().singleEliminateByLatinBlockSingleZonePlacements()
     }
 
     81 - puzzle.numPlacings
