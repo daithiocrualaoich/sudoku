@@ -51,7 +51,8 @@ object Difficulty {
   }
 
   def isPermitted(graphColouringProblem: GraphColouringProblem): Boolean = {
-    Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacements(graphColouringProblem) exists { _.solved }
+    // Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacements(graphColouringProblem) exists { _.solved }
+    Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacementsAndLatinBlockSinglePlacementSets(graphColouringProblem) exists { _.solved }
   }
 
 }
