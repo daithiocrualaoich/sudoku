@@ -1,4 +1,4 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
 object Solved {
   def unapply(graphColouringProblem: GraphColouringProblem): Option[GraphColouringProblem] = {
@@ -68,4 +68,3 @@ object Solver {
     }
   }
 }
-

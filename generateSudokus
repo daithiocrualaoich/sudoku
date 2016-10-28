@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./sbt011 assembly
+./sbt013 assembly
 
 for ((i=0; i<10000;i++))
 do

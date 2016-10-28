@@ -1,4 +1,4 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
 trait TestBoards {
 
@@ -449,5 +449,4 @@ trait TestBoards {
        3 9 8 | 6 5 4 | 1 2 7 
     """).toGraphColouringProblem
   }
-
 }

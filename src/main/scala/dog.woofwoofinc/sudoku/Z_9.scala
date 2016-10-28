@@ -1,4 +1,4 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
 sealed abstract class Z_9(val representative: Int) {
   override def toString(): String = "[%d]" format representative

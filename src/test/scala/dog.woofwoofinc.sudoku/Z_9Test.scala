@@ -1,9 +1,8 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{ FlatSpec, Matchers }
 
-class Z_9Test extends FlatSpec with ShouldMatchers {
+class Z_9Test extends FlatSpec with Matchers {
 
   "Z_9" should "create elements of Z_9 from Int" in {
     Z_9(1) should be(One)

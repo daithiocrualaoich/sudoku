@@ -1,9 +1,8 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
-import com.gu.pdf.PDFTranscoder
+import dog.woofwoofinc.pdf.PDFTranscoder
 import java.awt.Color
 import java.awt.Font
-import java.awt.Graphics2D
 import java.awt.Dimension
 import java.awt.geom.Line2D
 import org.apache.batik.svggen.SVGGraphics2D
@@ -61,7 +60,8 @@ object Main extends App {
           graphics.drawString(
             element.get.representative.toString,
             (col - 1) * scale / 9f + scale / 9f / 3,
-            (row - 1) * scale / 9f + 2 * scale / 9f / 3)
+            (row - 1) * scale / 9f + 2 * scale / 9f / 3
+          )
         }
       }
     }
@@ -121,5 +121,4 @@ object Main extends App {
 
   graphics.stream(args(0) + ".svg", true)
   PDFTranscoder.transcode(args(0) + ".svg", args(0) + ".pdf")
-
 }

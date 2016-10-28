@@ -1,9 +1,8 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{ FlatSpec, Matchers }
 
-class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBoards {
+class GraphColouringProblemTest extends FlatSpec with Matchers with TestBoards {
 
   val emptyBoard = Board(
     Row.empty, Row.empty, Row.empty,
@@ -107,17 +106,17 @@ class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBo
   it should "reduce using three element coverings" in {
     val graph = Board("""
        _ _ _ | 4 5 6 | 7 8 9   <<--- Three element covering in first zone. 
-	   _ _ _ | _ _ _ | _ _ _ 
        _ _ _ | _ _ _ | _ _ _ 
-	  -----------------------
-	   _ _ _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	  -----------------------
-	   _ _ _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _
-        """).toGraphColouringProblem.eliminateByLatinBlockExclusion
+       _ _ _ | _ _ _ | _ _ _ 
+      -----------------------
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+      -----------------------
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _
+    """).toGraphColouringProblem.eliminateByLatinBlockExclusion
 
     graph(One, One).candidates should be(Set(One, Two, Three))
     graph(Two, One).candidates should be(Set(One, Two, Three))
@@ -144,18 +143,18 @@ class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBo
 
   it should "reduce using latin block single row placements" in {
     val graph = Board("""
-	   _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by row. 
-	   _ _ _ | 1 _ _ | _ _ _
-	   _ _ _ | _ _ _ | 1 _ _ 
-	  -----------------------
-	   _ 1 _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	  -----------------------
-	   _ _ 1 | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by row. 
+       _ _ _ | 1 _ _ | _ _ _
+       _ _ _ | _ _ _ | 1 _ _ 
+      -----------------------
+       _ 1 _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+      -----------------------
+       _ _ 1 | _ _ _ | _ _ _ 
        _ _ _ | _ _ _ | _ _ _ 
        _ _ _ | _ _ _ | _ _ _
-		""").toGraphColouringProblem.eliminateByLatinBlockExclusion
+    """).toGraphColouringProblem.eliminateByLatinBlockExclusion
 
     graph(One, One).candidates should be(Z_9.set)
     graph(Two, One).candidates should be(Z_9.set - One)
@@ -182,18 +181,18 @@ class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBo
 
   it should "reduce using latin block single column placements" in {
     val graph = Board("""
-	   _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by column. 
-	   _ _ _ | 1 _ _ | _ _ _
-	   _ _ _ | _ _ _ | 1 _ _ 
-	  -----------------------
-	   _ 1 _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	  -----------------------
-	   _ _ 1 | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by column. 
+       _ _ _ | 1 _ _ | _ _ _
+       _ _ _ | _ _ _ | 1 _ _ 
+      -----------------------
+       _ 1 _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+      -----------------------
+       _ _ 1 | _ _ _ | _ _ _ 
        _ _ _ | _ _ _ | _ _ _ 
        _ _ _ | _ _ _ | _ _ _
-		""").toGraphColouringProblem.eliminateByLatinBlockExclusion
+    """).toGraphColouringProblem.eliminateByLatinBlockExclusion
 
     graph(One, One).candidates should be(Z_9.set)
     graph(Two, One).candidates should be(Z_9.set - One)
@@ -220,18 +219,18 @@ class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBo
 
   it should "reduce using latin block single zone placements" in {
     val graph = Board("""
-	   _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by zone. 
-	   _ _ _ | 1 _ _ | _ _ _
-	   _ _ _ | _ _ _ | 1 _ _ 
-	  -----------------------
-	   _ 1 _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	   _ _ _ | _ _ _ | _ _ _ 
-	  -----------------------
-	   _ _ 1 | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _   <<--- Single placing in first column by zone. 
+       _ _ _ | 1 _ _ | _ _ _
+       _ _ _ | _ _ _ | 1 _ _ 
+      -----------------------
+       _ 1 _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+       _ _ _ | _ _ _ | _ _ _ 
+      -----------------------
+       _ _ 1 | _ _ _ | _ _ _ 
        _ _ _ | _ _ _ | _ _ _ 
        _ _ _ | _ _ _ | _ _ _
-		""").toGraphColouringProblem.eliminateByLatinBlockExclusion
+    """).toGraphColouringProblem.eliminateByLatinBlockExclusion
 
     graph(One, One).candidates should be(Z_9.set)
     graph(Two, One).candidates should be(Z_9.set - One)
@@ -257,34 +256,34 @@ class GraphColouringProblemTest extends FlatSpec with ShouldMatchers with TestBo
   }
 
   it should "return valid for empty board" in {
-    emptyBoard.valid should be(true)
+    emptyBoard should be('valid)
   }
 
   it should "return valid for partial board" in {
-    partialBoard.valid should be(true)
+    partialBoard should be('valid)
   }
 
   it should "return valid for full board" in {
-    fullBoard.valid should be(true)
+    fullBoard should be('valid)
   }
 
   it should "return invalid for invalid board" in {
-    invalidBoard.valid should be(false)
+    invalidBoard should not be 'valid
   }
 
   it should "return unsolved for empty board" in {
-    emptyBoard.solved should be(false)
+    emptyBoard should not be 'solved
   }
 
   it should "return unsolved for partial board" in {
-    partialBoard.solved should be(false)
+    partialBoard should not be 'solved
   }
 
   it should "return solved for full board" in {
-    fullBoard.solved should be(true)
+    fullBoard should be('solved)
   }
 
   it should "return unsolved for invalid board" in {
-    invalidBoard.solved should be(false)
+    invalidBoard should not be 'solved
   }
 }

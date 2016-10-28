@@ -1,6 +1,5 @@
 *.swp
 target
-dev/appengine-java-sdk*
 .idea
 .idea_modules
 .settings

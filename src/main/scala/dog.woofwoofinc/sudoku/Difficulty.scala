@@ -1,4 +1,4 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
 sealed abstract class Difficulty(val description: String) {
   override def toString(): String = description
@@ -41,5 +41,4 @@ object Difficulty {
     // Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacements(graphColouringProblem) exists { _.solved }
     Solver.solveByIterateEliminateByLatinBlockExclusionAndLatinBlockSinglePlacementsAndLatinBlockSinglePlacementSets(graphColouringProblem) exists { _.solved }
   }
-
 }

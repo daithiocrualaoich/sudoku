@@ -1,9 +1,10 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
 case class Row(
     first: Option[Z_9], second: Option[Z_9], third: Option[Z_9],
     fourth: Option[Z_9], fifth: Option[Z_9], sixth: Option[Z_9],
-    seventh: Option[Z_9], eighth: Option[Z_9], ninth: Option[Z_9]) {
+    seventh: Option[Z_9], eighth: Option[Z_9], ninth: Option[Z_9]
+) {
 
   private val values = Array(
     first, second, third,
@@ -21,7 +22,8 @@ object Row {
 case class Column(
     first: Option[Z_9], second: Option[Z_9], third: Option[Z_9],
     fourth: Option[Z_9], fifth: Option[Z_9], sixth: Option[Z_9],
-    seventh: Option[Z_9], eighth: Option[Z_9], ninth: Option[Z_9]) {
+    seventh: Option[Z_9], eighth: Option[Z_9], ninth: Option[Z_9]
+) {
 
   private val values = Array(
     first, second, third,
@@ -39,7 +41,8 @@ object Column {
 case class Board(
     first: Row, second: Row, third: Row,
     fourth: Row, fifth: Row, sixth: Row,
-    seventh: Row, eighth: Row, ninth: Row) {
+    seventh: Row, eighth: Row, ninth: Row
+) {
 
   private lazy val rows = List(
     first, second, third,
@@ -120,8 +123,7 @@ object Board {
         boardValue(One, j), boardValue(Two, j), boardValue(Three, j),
         boardValue(Four, j), boardValue(Five, j), boardValue(Six, j),
         boardValue(Seven, j), boardValue(Eight, j), boardValue(Nine, j)
-      )
-      )
+      ))
     }).toMap
 
     Board(
@@ -130,5 +132,4 @@ object Board {
       rows(Seven), rows(Eight), rows(Nine)
     )
   }
-
 }

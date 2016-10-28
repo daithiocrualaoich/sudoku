@@ -1,7 +1,6 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
-import com.gu.sudoku.GraphColouringProblem._
-import scala.util.Random
+import dog.woofwoofinc.sudoku.GraphColouringProblem._
 
 object Generator {
 
@@ -23,7 +22,8 @@ object Generator {
 
   def generateEasyPuzzle(
     maxPlacings: Int = 32,
-    graphColouringProblem: GraphColouringProblem = generateColouring().get): Option[GraphColouringProblem] = {
+    graphColouringProblem: GraphColouringProblem = generateColouring().get
+  ): Option[GraphColouringProblem] = {
     // println("generateEasyPuzzle: (%s, %s)".format(Difficulty.difficulty(graphColouringProblem), graphColouringProblem.numPlacings))
 
     Difficulty(graphColouringProblem) match {
@@ -53,7 +53,8 @@ object Generator {
 
   def generateMediumPuzzle(
     maxPlacings: Int = 28,
-    graphColouringProblem: GraphColouringProblem = generateColouring().get): Option[GraphColouringProblem] = {
+    graphColouringProblem: GraphColouringProblem = generateColouring().get
+  ): Option[GraphColouringProblem] = {
     // println("generateMediumPuzzle: (%s, %s)".format(Difficulty.difficulty(graphColouringProblem), graphColouringProblem.numPlacings))
 
     Difficulty(graphColouringProblem) match {
@@ -82,7 +83,8 @@ object Generator {
 
   def generateHardPuzzle(
     maxPlacings: Int = 26,
-    graphColouringProblem: GraphColouringProblem = generateColouring().get): Option[GraphColouringProblem] = {
+    graphColouringProblem: GraphColouringProblem = generateColouring().get
+  ): Option[GraphColouringProblem] = {
     // println("generateHardPuzzle: (%s, %s)".format(Difficulty.difficulty(graphColouringProblem), graphColouringProblem.numPlacings))
 
     Difficulty(graphColouringProblem) match {
@@ -105,5 +107,4 @@ object Generator {
         puzzles.headOption
     }
   }
-
 }

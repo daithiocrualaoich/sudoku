@@ -1,23 +1,19 @@
-import AssemblyKeys._
+organization := "dog.woofwoofinc"
 
-organization := "com.gu"
-
-name := "sudoku"
+name := "dog.woofwoofinc.sudoku"
 
 version := "1-SNAPSHOT"
 
-scalaVersion := "2.9.1"
+scalaVersion := "2.11.8"
 
 
 
 
 // Target Settings
 
-seq(sbtassembly.Plugin.assemblySettings: _*)
-
 test in assembly := {}
 
-jarName in assembly := "sudoku.jar"
+assemblyJarName in assembly := "dog.woofwoofinc.sudoku.jar"
 
 
 
@@ -35,21 +31,14 @@ libraryDependencies ++= Seq(
   "batik" % "batik-rasterizer" % "1.6-1",
   "batik" % "batik-extension" % "1.6-1",
   "crimson" % "crimson" % "1.1.3",
-  "org.slf4j" % "slf4j-api" % "1.6.4",
-  "org.slf4j" % "slf4j-jdk14" % "1.6.4"
+  "org.slf4j" % "slf4j-api" % "1.7.12",
+  "org.slf4j" % "slf4j-jdk14" % "1.7.12"
 )
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "1.6.1" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
 
-
-
-
-
-// Development Settings
-
-seq(scalariformSettings: _*)
 
 
 
@@ -58,6 +47,6 @@ seq(scalariformSettings: _*)
 
 maxErrors := 20
 
-javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 scalacOptions ++= Seq("-unchecked", "-optimise", "-deprecation")

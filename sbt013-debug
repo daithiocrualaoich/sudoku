@@ -3,4 +3,4 @@
 java -Xmx768M -XX:+UseCompressedOops -XX:MaxPermSize=384m \
      -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 \
      $SBT_EXTRA_PARAMS \
-     -jar `dirname $0`/dev/sbt-launch-0.11.2.jar "$@"
+     -jar `dirname $0`/dev/sbt-launch-0.13.12.jar "$@"

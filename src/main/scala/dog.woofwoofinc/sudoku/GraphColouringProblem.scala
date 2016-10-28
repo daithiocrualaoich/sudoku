@@ -1,4 +1,4 @@
-package com.gu.sudoku
+package dog.woofwoofinc.sudoku
 
 case class Node(label: (Z_9, Z_9), candidates: Set[Z_9]) {
 
@@ -16,8 +16,8 @@ case class Node(label: (Z_9, Z_9), candidates: Set[Z_9]) {
     !(this.label._1 == column && this.label._2 == row) &&
       (this.label._1 == column || this.label._2 == row || (
         (this.label._1.representative - 1) / 3 == (column.representative - 1) / 3 &&
-        (this.label._2.representative - 1) / 3 == (row.representative - 1) / 3)
-      )
+        (this.label._2.representative - 1) / 3 == (row.representative - 1) / 3
+      ))
   }
 
   lazy val neighbourLabels: Set[(Z_9, Z_9)] = (Z_9.set cross Z_9.set) filter { neighbours }
@@ -148,7 +148,8 @@ trait GraphColouringProblem { self =>
     _graph.oneElementPlacings foreach { singleValueNode =>
       _graph = _graph.constrainNeighbours(
         singleValueNode.label,
-        Z_9.set -- singleValueNode.candidates)
+        Z_9.set -- singleValueNode.candidates
+      )
     }
 
     new GraphColouringProblem {
@@ -227,8 +228,8 @@ trait GraphColouringProblem { self =>
     // For each zone, place elements that have only one possible placing
 
     var _graphColouringProblem = this
-    for (band <- (0 to 2)) {
-      for (indexWithinBand <- (0 to 2)) {
+    for (band <- 0 to 2) {
+      for (indexWithinBand <- 0 to 2) {
         _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementsIn(
           _graphColouringProblem.graph.zoneOf(
             Z_9(band * 3 + 1), Z_9(indexWithinBand * 3 + 1)
@@ -297,8 +298,8 @@ trait GraphColouringProblem { self =>
       }
 
       // Eliminate by zones
-      for (band <- (0 to 2)) {
-        for (indexWithinBand <- (0 to 2)) {
+      for (band <- 0 to 2) {
+        for (indexWithinBand <- 0 to 2) {
           _graphColouringProblem = _graphColouringProblem.eliminateBySinglePlacementSetsIn(
             _graphColouringProblem.graph.zoneOf(Z_9(band * 3 + 1), Z_9(indexWithinBand * 3 + 1))
           )

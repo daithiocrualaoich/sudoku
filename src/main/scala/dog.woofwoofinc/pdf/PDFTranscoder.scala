@@ -1,4 +1,4 @@
-package com.gu.pdf
+package dog.woofwoofinc.pdf
 
 import org.apache.batik.apps.rasterizer.DestinationType
 import org.apache.batik.transcoder.{ TranscoderOutput, TranscoderInput, Transcoder }
@@ -22,6 +22,5 @@ object PDFTranscoder {
         DestinationType.PDF.getTranscoder.transcode(new TranscoderInput(in), new TranscoderOutput(out))
       }
     }
-
   }
 }
